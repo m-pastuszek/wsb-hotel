@@ -16,7 +16,7 @@ class CustomerListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Lista klientów';
+    public $name = 'Klienci';
 
     /**
      * Display header description.

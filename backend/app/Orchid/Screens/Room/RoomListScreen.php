@@ -14,14 +14,14 @@ class RoomListScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Lista pokoi';
+    public $name = 'Pokoje';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Lista wszystkich pokoi w hotelu.';
+    public $description = 'Lista wszystkich pokojów w hotelu.';
 
     /**
      * Query data.
