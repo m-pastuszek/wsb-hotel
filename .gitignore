@@ -1,0 +1,7 @@
+/frontend/dist
+/frontend/node_modules
+/frontend/.idea
+/frontend/.vscode
+/frontend/.env
+/frontend/yarn-error.log
+/frontend/.DS_Store

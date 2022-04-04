@@ -1,0 +1,27 @@
+$breakpoints: (
+    'v-large': $v-large + 'px',
+    'm-large': $m-large + 'px',
+    'large': $large + 'px',
+    'xl-tablet': $xl-tablet + 'px',
+    'tablet': $tablet + 'px',
+    's-tablet': $s-tablet + 'px',
+    'xs-tablet': $xs-tablet + 'px',
+    'mobile': $mobile + 'px'
+
+) !default;
+
+@mixin breakpoint-max($breakpoint){
+    @if map-has-key($breakpoints, $breakpoint){
+        @media(max-width: map-get($breakpoints, $breakpoint)){
+            @content;
+        }
+    }
+}
+
+@mixin breakpoint-min($breakpoint){
+    @if map-has-key($breakpoints, $breakpoint){
+        @media(min-width: map-get($breakpoints, $breakpoint)){
+            @content;
+        }
+    }
+}
