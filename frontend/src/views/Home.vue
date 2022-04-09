@@ -5,6 +5,7 @@
     <Hero/>
     <GoldBar/>
     <TitleAndImages/>
+    <Slider/>
     <BigTitleOnWhite/>
   </div>
 </template>
@@ -14,6 +15,7 @@ import Hero from '@/components/Hero.vue'
 import GoldBar from '@/components/GoldBar.vue'
 import TitleAndImages from '@/components/TitleAndImages.vue'
 import BigTitleOnWhite from '@/components/BigTitleOnWhite.vue'
+import Slider from '@/components/Slider.vue'
 
 
 

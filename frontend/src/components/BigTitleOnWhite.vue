@@ -79,7 +79,7 @@
 @import "@/assets/scss/mixins.scss";
 
 .big-title-on-white {
-    // min-height: 100vh;
+    margin-top: 166px;
     margin-bottom: 182px;
     position: relative;
     @include breakpoint-max('mobile') {

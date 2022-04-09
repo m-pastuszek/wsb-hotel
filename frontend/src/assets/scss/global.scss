@@ -18,6 +18,9 @@ html {
     -webkit-text-size-adjust: 100%;
     font-size: 62.5%;
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
     @include breakpoint-max("large") {
         font-size: 56%;
     }
