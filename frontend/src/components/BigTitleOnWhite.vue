@@ -48,17 +48,17 @@
                     yPercent: 0,
                     ease: "power3.easeInOut",
                     scrollTrigger: {
-                        trigger: ".title-and-image",
+                        trigger: ".big-title-on-white",
                         scrub: 2
                     },
                 });
 
-                gsap.set(".floating", {yPercent: -40});
+                gsap.set(".floating", {yPercent: -20});
                 gsap.to(".floating", {
                     yPercent: 0,
                     ease: "power3.easeInOut",
                     scrollTrigger: {
-                        trigger: ".title-and-image",
+                        trigger: ".big-title-on-white",
                         scrub: 2
                     },
                 });
@@ -125,6 +125,7 @@
         width: 100%;
         height: 0;
         padding-top: 117%;
+        z-index: -1;
         img {
             position: absolute;
             left: 0;

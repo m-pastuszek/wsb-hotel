@@ -7,6 +7,8 @@
     <TitleAndImages/>
     <Slider/>
     <BigTitleOnWhite/>
+    <TitleAndTextOnBlack/>
+    <ContactForm/>
   </div>
 </template>
 
@@ -15,7 +17,9 @@ import Hero from '@/components/Hero.vue'
 import GoldBar from '@/components/GoldBar.vue'
 import TitleAndImages from '@/components/TitleAndImages.vue'
 import BigTitleOnWhite from '@/components/BigTitleOnWhite.vue'
+import TitleAndTextOnBlack from '@/components/TitleAndTextOnBlack.vue'
 import Slider from '@/components/Slider.vue'
+import ContactForm from '@/components/ContactForm.vue'
 
 
 
