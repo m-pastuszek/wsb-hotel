@@ -17,6 +17,8 @@ use App\Orchid\Screens\Examples\ExampleFieldsScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\Meal\MealEditScreen;
+use App\Orchid\Screens\Meal\MealListScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
@@ -145,6 +147,10 @@ Route::screen('booking-statuses', BookingStatusListScreen::class)->name('platfor
 // Customers
 Route::screen('customer/{customer?}', CustomerEditScreen::class)->name('platform.customer.edit');
 Route::screen('customers', CustomerListScreen::class)->name('platform.customer.list');
+
+// RoomTypes
+Route::screen('meal/{meal?}', MealEditScreen::class)->name('platform.meal.edit');
+Route::screen('meals', MealListScreen::class)->name('platform.meal.list');
 
 // Rooms
 Route::screen('room/{room?}', RoomEditScreen::class)->name('platform.room.edit');

@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
-class RoomType extends Model
+class Meal extends Model
 {
-    use HasFactory, AsSource, Attachable, Filterable;
+    use HasFactory, AsSource, Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +18,8 @@ class RoomType extends Model
      */
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'cost'
     ];
 
     /**
@@ -28,12 +28,8 @@ class RoomType extends Model
      * @var array
      */
     protected $allowedSorts = [
-        'id',
+        'name',
         'created_at',
         'updated_at'
     ];
-
-    public function rooms() {
-        return $this->hasMany(Room::class);
-    }
 }

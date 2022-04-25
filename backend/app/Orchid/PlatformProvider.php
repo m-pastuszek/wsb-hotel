@@ -71,6 +71,10 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('number-list')
                 ->route('platform.booking-status.list'),
 
+            Menu::make('Wyżywienie')
+                ->icon('cup')
+                ->route('platform.meal.list'),
+
 
            /* Menu::make('Changelog')
                 ->icon('shuffle')

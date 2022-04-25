@@ -33,4 +33,9 @@ class Amenity extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function rooms(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Room::class);
+    }
 }
