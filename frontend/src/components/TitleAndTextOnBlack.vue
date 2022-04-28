@@ -85,6 +85,7 @@
     position: relative;
     background-color: $black;
     padding: 258px 0;
+    overflow: hidden;
     @include breakpoint-max('mobile') {
         overflow: hidden;
         padding-bottom: 200px;
