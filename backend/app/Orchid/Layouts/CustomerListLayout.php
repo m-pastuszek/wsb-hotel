@@ -34,7 +34,7 @@ class CustomerListLayout extends Table
             TD::make('phone', 'Numer telefonu'),
             TD::make('email', 'Adres e-mail'),
             TD::make('created_at', 'Data dodania')->render(function ($booking) {
-                return view('components.columns.date', ['date' => $booking->created_at]);
+                return view('components.columns.date-time', ['datetime' => $booking->created_at]);
             })->sort()
         ];
     }

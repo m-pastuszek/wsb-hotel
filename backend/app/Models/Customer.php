@@ -35,4 +35,8 @@ class Customer extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function booking() {
+        return $this->hasOne(Booking::class);
+    }
 }

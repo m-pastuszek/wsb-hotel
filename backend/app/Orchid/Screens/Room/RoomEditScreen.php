@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Room;
 
+use App\Models\Amenity;
 use App\Models\Room;
 use App\Models\RoomBedType;
 use App\Models\RoomStatus;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Quill;
+use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Screen;
@@ -122,6 +124,12 @@ class RoomEditScreen extends Screen
                     ->help('Wybierz rodzaj łóżek w pokoju.')
                     ->fromModel(RoomBedType::class, 'name'),
 
+                Relation::make('room.amenities.')
+                    ->fromModel(Amenity::class, 'name')
+                    ->multiple()
+                    ->title('Wybierz udogodnienia w pokoju.')
+                    ->required(),
+
                 Select::make('room.room_status_id')
                     ->title('Status pokoju')
                     ->help('Wybierz aktualny status pokoju.')
@@ -167,7 +175,11 @@ class RoomEditScreen extends Screen
             $request->input('images', [])
         );
 
-        Alert::success('Pomyślnie dodano nowy pokój do bazy danych.');
+        // Obsługa relacji many-to-many dla udogodnień.
+        $room->amenities()->detach(); // Odłączenie wszystkich poprzednich
+        $room->amenities()->attach($request->input('room.amenities')); // Dodanie wszystkich zaznaczonych w formularzu.
+
+        Alert::success('Pomyślnie zapisano pokój w bazie danych.');
 
         return redirect()->route('platform.room.list');
     }

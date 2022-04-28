@@ -109,7 +109,7 @@ class AmenityEditScreen extends Screen
     {
         $amenity->fill($request->get('amenity'))->save();
 
-        Alert::success('Pomyślnie dodano nowe udogodnienie do bazy danych.');
+        Alert::success('Pomyślnie zapisano udogodnienie w bazie danych.');
 
         return redirect()->route('platform.amenity.list');
     }

@@ -105,6 +105,7 @@ class BookingEditScreen extends Screen
                     ->placeholder('Wybierz datę...')
                     ->format('d-m-Y'),
 
+                // TODO: Zmienić na koszt rezerwacji.
                 Input::make('booking.amount')
                     ->title('Liczba zameldowanych osób')
                     ->placeholder('np. 1')

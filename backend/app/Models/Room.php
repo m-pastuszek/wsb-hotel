@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Orchid\Attachment\Attachable;
 use Orchid\Attachment\Models\Attachment;
@@ -41,6 +44,40 @@ class Room extends Model
         'updated_at'
     ];
 
+
+    /**
+     * Sprawdzenie, czy pokój jest zarezerwowany w podanych dniach.
+     * @param $start_date
+     * @param $end_date
+     * @return bool
+     */
+    public function isBooked($start_date, $end_date): bool
+    {
+        $booking = Booking::where('room_id', $this->id)
+                        ->whereBetween('time_from', [$start_date, $end_date])
+                        ->orWhereBetween('time_to', [$start_date, $end_date])
+                        ->get();
+
+        // Jeśli jest zwracany element ($booking nie jest "pusty")
+        if($booking->isNotEmpty()) {
+            return true;
+        } else
+            return false;
+    }
+
+    /**
+     * Sprawdzenie, czy pokój jest wyłączony z użytkowania.
+     * Jeśli pokój jest wyłączony z użytkowania, zwraca false.
+     * @return bool
+     */
+    public function isOperatable(): bool
+    {
+        if ($this->status->id == 4)
+            return false;
+        else
+            return true;
+    }
+
     /**
      * Room - Status relationship
      * @return HasOne
@@ -52,11 +89,11 @@ class Room extends Model
 
     /**
      * Room - RoomType relationship
-     * @return HasOne
+     * @return BelongsTo
      */
-    public function type(): HasOne
+    public function roomType(): BelongsTo
     {
-        return $this->hasOne(RoomType::class, 'id', 'room_type_id');
+        return $this->belongsTo(RoomType::class);
     }
 
     /**
@@ -66,5 +103,15 @@ class Room extends Model
     public function bedType(): HasOne
     {
         return $this->hasOne(RoomBedType::class, 'id', 'bed_type_id');
+    }
+
+    public function amenities(): BelongsToMany
+    {
+        return $this->belongsToMany(Amenity::class);
+    }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
     }
 }
