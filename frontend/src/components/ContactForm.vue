@@ -68,7 +68,7 @@
                             <p v-if="errors.length">
                                 <b>Proszę poprawić następujące błędy:</b>
                                 <ul>
-                                    <li v-for="error in errors">{{ error }}</li>
+                                    <li v-for="error in errors" :key="error">{{ error }}</li>
                                 </ul>
                             </p>
                         </div>

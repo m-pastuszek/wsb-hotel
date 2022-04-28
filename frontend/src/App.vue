@@ -63,7 +63,7 @@ class="header"
                         </RouterLink>
                     </li>
                     <li class="header__menu-element ">
-                        <RouterLink to="/">
+                        <RouterLink to="/rezerwacja">
                             Dokonaj rezerwacji
                         </RouterLink>
                     </li>
