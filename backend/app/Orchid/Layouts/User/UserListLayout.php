@@ -27,7 +27,7 @@ class UserListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::make('name', __('Name'))
+            TD::make('name', __('Imię'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
@@ -35,7 +35,7 @@ class UserListLayout extends Table
                     return new Persona($user->presenter());
                 }),
 
-            TD::make('email', __('Email'))
+            TD::make('email', __('Adres e-mail'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
@@ -49,13 +49,13 @@ class UserListLayout extends Table
                         ]);
                 }),
 
-            TD::make('updated_at', __('Last edit'))
+            TD::make('updated_at', __('Ostatnia aktualizacja'))
                 ->sort()
                 ->render(function (User $user) {
                     return $user->updated_at->toDateTimeString();
                 }),
 
-            TD::make(__('Actions'))
+            TD::make(__('Działania'))
                 ->align(TD::ALIGN_CENTER)
                 ->width('100px')
                 ->render(function (User $user) {
@@ -63,13 +63,13 @@ class UserListLayout extends Table
                         ->icon('options-vertical')
                         ->list([
 
-                            Link::make(__('Edit'))
+                            Link::make(__('Edycja'))
                                 ->route('platform.systems.users.edit', $user->id)
                                 ->icon('pencil'),
 
-                            Button::make(__('Delete'))
+                            Button::make(__('Usuwanie'))
                                 ->icon('trash')
-                                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                                ->confirm(__('W momencie usunięcia konta użytkownika, wszystkie dane zostaną permanentnie usunięte. Przed usunięciem konta pobierz wszystkie dane lub informacje, które pragniesz zachować.'))
                                 ->method('remove', [
                                     'id' => $user->id,
                                 ]),

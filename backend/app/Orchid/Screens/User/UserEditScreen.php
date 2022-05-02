@@ -27,14 +27,14 @@ class UserEditScreen extends Screen
      *
      * @var string
      */
-    public $name = 'Edit User';
+    public $name = 'Edytowanie użytkownika';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Details such as name, email and password';
+    public $description = 'Edytowanie danych użytkownika takich jak nazwa czy adres e-mail';
 
     /**
      * @var string
@@ -77,19 +77,19 @@ class UserEditScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Button::make(__('Impersonate user'))
+            Button::make(__('Podszywanie się pod użytkownika'))
                 ->icon('login')
-                ->confirm('You can revert to your original state by logging out.')
+                ->confirm('Możesz powrócić do stanu początkowego poprzez wylogowanie się')
                 ->method('loginAs')
                 ->canSee($this->user->exists && \request()->user()->id !== $this->user->id),
 
-            Button::make(__('Remove'))
+            Button::make(__('Usuń'))
                 ->icon('trash')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                ->confirm(__('W momencie usunięcia konta użytkownika, wszystkie dane zostaną permanentnie usunięte. Przed usunięciem konta pobierz wszystkie dane lub informacje, które pragniesz zachować.'))
                 ->method('remove')
                 ->canSee($this->user->exists),
 
-            Button::make(__('Save'))
+            Button::make(__('Zapisz'))
                 ->icon('check')
                 ->method('save'),
         ];
@@ -103,10 +103,10 @@ class UserEditScreen extends Screen
         return [
 
             Layout::block(UserEditLayout::class)
-                ->title(__('Profile Information'))
-                ->description(__('Update your account\'s profile information and email address.'))
+                ->title(__('Informacje o profilu użytkownika'))
+                ->description(__('Aktualizacja informacji o profilu użytkownika i adresu e-mail'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('Zapisz'))
                         ->type(Color::DEFAULT())
                         ->icon('check')
                         ->canSee($this->user->exists)
@@ -114,10 +114,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(UserPasswordLayout::class)
-                ->title(__('Password'))
-                ->description(__('Ensure your account is using a long, random password to stay secure.'))
+                ->title(__('Hasło'))
+                ->description(__('Użyj długiego, losowego ciągu znaków aby zwiększyć bezpieczeństwo swojego konta'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('Zapisz'))
                         ->type(Color::DEFAULT())
                         ->icon('check')
                         ->canSee($this->user->exists)
@@ -125,10 +125,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(UserRoleLayout::class)
-                ->title(__('Roles'))
-                ->description(__('A Role defines a set of tasks a user assigned the role is allowed to perform.'))
+                ->title(__('Role'))
+                ->description(__('Role definiują zadania, które mogą zostać wykonane przez posiadające określoną rolę osoby'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('Zapisz'))
                         ->type(Color::DEFAULT())
                         ->icon('check')
                         ->canSee($this->user->exists)
@@ -136,10 +136,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(RolePermissionLayout::class)
-                ->title(__('Permissions'))
-                ->description(__('Allow the user to perform some actions that are not provided for by his roles'))
+                ->title(__('Uprawnienia'))
+                ->description(__('Zezwól użytkownikowi na wykonywanie zadań, które nie są przewidziane w zakresie posiadanych przez nich ról'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('Zapisz'))
                         ->type(Color::DEFAULT())
                         ->icon('check')
                         ->canSee($this->user->exists)
