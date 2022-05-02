@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AmenityController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\BookingStatusController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\MealController;
 use App\Http\Controllers\Api\RoomBedTypeController;
@@ -26,6 +27,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Formularz kontaktowy
+Route::post('contact', [ContactController::class, 'ContactForm']);
 
 // Amenities - Udogodnienia
 Route::group(['prefix' => '/amenities'], function() {
