@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\RoomResource;
+use App\Models\Amenity;
 use App\Models\Booking;
 use App\Models\Room;
 use App\Models\RoomBedType;
@@ -62,18 +63,20 @@ class BookingController extends Controller
                     if ($request->has('bed_type')) {
                         $bedType = RoomBedType::where('name', $request->bed_type)->first();
                         /*
-                         * Zwróć null, jeśli wszystko różne od "pokój ma ten typ łóżka".
-                         * W przypadku, jeśli pokój ma ten typ łóżka, kod przechodzi do następnego ifa.
+                         * Jeśli pokój ma ten sam typ łóżka, co w zapytaniu zostawia go w tablicy.
+                         * Jeśli ma inny, przechodzi do następnego elementu pętli foreach.
                          */
-                        if (!$room->bed_type_id == $bedType->id)
-                            $room = null;
+                        if ($room->bed_type_id === $bedType->id)
+                            $room = $room;
+                        else
+                            continue;
                     }
 
                     if ($request->has(['start_date', 'end_date'])) {
 
                         // Jeśli pokój jest zarezerwowany, nie wrzuca go do tablicy.
                         if ($room->isBooked($request->start_date, $request->end_date)) {
-                            $room = null;
+                            continue;
                         } /*else {
                             // TODO: Kalkulacja ceny w zależności od ilości dni na backendzie?
                             $start_date = Carbon::createFromFormat('Y-m-d', $request->start_date);
@@ -83,6 +86,51 @@ class BookingController extends Controller
 
                             $CENA_ZA_REZERWACJE = $room->price_per_night * $daysRequested;
                         }*/
+                    }
+
+                    // Jeśli zaznaczono "Widok na morze"
+                    if ($request->has('sea_view') and $request->get('sea_view') == true) {
+                        $amenity = Amenity::find(1);
+                        if ($room->amenities()->where('amenity_id', $amenity->id)->exists())
+                            $room = $room;
+                        else
+                            continue;
+                    }
+
+                    // Jeśli zaznaczono "Balkon"
+                    if ($request->has('balcony') and $request->get('balcony') == true) {
+                        $amenity = Amenity::find(2);
+                        if ($room->amenities()->where('amenity_id', $amenity->id)->exists())
+                            $room = $room;
+                        else
+                            continue;
+                    }
+
+                    // Jeśli zaznaczono "Taras"
+                    if ($request->has('terrace') and $request->get('terrace') == true) {
+                        $amenity = Amenity::find(3);
+                        if ($room->amenities()->where('amenity_id', $amenity->id)->exists())
+                            $room = $room;
+                        else
+                            continue;
+                    }
+
+                    // Jeśli zaznaczono "Klimatyzacja"
+                    if ($request->has('air_conditioning') and $request->get('air_conditioning') == true) {
+                        $amenity = Amenity::find(4);
+                        if ($room->amenities()->where('amenity_id', $amenity->id)->exists())
+                            $room = $room;
+                        else
+                            continue;
+                    }
+
+                    // Jeśli zaznaczono "Przystosowany dla niepełnosprawnych"
+                    if ($request->has('adapted_for_disabled') and $request->get('adapted_for_disabled') == true) {
+                        $amenity = Amenity::find(5);
+                        if ($room->amenities()->where('amenity_id', $amenity->id)->exists())
+                            $room = $room;
+                        else
+                            continue;
                     }
 
                     // Jeżeli pokój nie jest null i nie jest wyłączony z użytkowania, dodaj ID do tablicy.
