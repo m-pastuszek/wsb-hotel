@@ -22,7 +22,7 @@ class RoomResource extends JsonResource
             'floor' => $this->floor,
             'description' => $this->description,
             'price_per_night' => $this->price_per_night,
-            'room_type' => new RoomTypeResource($this->type),
+            'room_type' => new RoomTypeResource($this->roomType),
             'bed_type' => new RoomBedTypeResource($this->bedType),
             'status' => new RoomStatusResource($this->status),
             'photos' => $this->attachment(), // TODO: Obsługa dodawania zdjęć pokoi.
