@@ -31,10 +31,9 @@
                 </div>
                 <div class="contact-form__right">
                     <form 
-                        action="#" 
+                        @submit.prevent="checkForm"
                         class="contact-form__form"
-                        @submit="checkForm"
-                        method="get"
+                        method="post"
                         >
                         <label for="name">
                             <p>Imię:</p>
@@ -61,9 +60,9 @@
                             <input v-model="marketing" name="marketing" type="checkbox">
                             <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut facilisis tristique urna et proin. Bibendum vitae tristique interdum dignissim at ut amet vitae. </span>
                         </label>
-                        <label for="" class="contact-form__submit-label">
-                            <input type="submit" value="Wyślij wiadomość">
-                        </label>
+                        <div class="contact-form__send-button">
+                            <button  > Wyślij wiadomość</button>
+                        </div>
                         <div class="contact-form__error-box">
                             <p v-if="errors.length">
                                 <b>Proszę poprawić następujące błędy:</b>
@@ -71,6 +70,9 @@
                                     <li v-for="error in errors" :key="error">{{ error }}</li>
                                 </ul>
                             </p>
+                        </div>
+                        <div v-if="status" class="contact-form__status-box">
+                            <span>{{ status }}</span>
                         </div>
                     </form>
                 </div>
@@ -81,6 +83,7 @@
 
 
 <script>
+    import axios from 'axios';
     export default {
         data() {
             return {
@@ -92,12 +95,35 @@
                 rodo: null,
                 marketing: null,
                 successMessage: 'Twoja wiadomość została wysłana!',
+                errorMessage: 'Przepraszamy, wystąpił problem z wysłaniem formularza. Spróbuj ponownie później.',
+                status: "",
             }
         },
         methods: {
+            sendForm: function () {
+                axios
+                    .post('https://hotel.mpastuszek.pl/api/contact', {
+                        first_name: this.name,
+                        last_name: this.surname,
+                        email: this.email,
+                        message: this.message,
+                        rodo_consent: this.rodo,
+                        marketing_consent: this.marketing,
+                    })
+                    .then((response) => {
+                        this.status = this.successMessage;
+                    })
+                    .catch(() => {
+                        this.status = this.errorMessage;
+                    });
+            },
+
             checkForm: function (e) {
                 if(this.name && this.surname && this.email && this.message && this.rodo) {
+                    this.sendForm();
+                    e.preventDefault();
                     return true;
+
                 }
 
                 this.errors = [];
@@ -120,11 +146,14 @@
                     this.errors.push('Pole polityka prywatności jest wymagane');
                 }
                 e.preventDefault();
+
+
             },
             validEmail: function (email) {
                 const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return re.test(email);
             }
+
         }
     }
 </script>
@@ -257,12 +286,12 @@
             line-height: 1.2rem;
         }
     }
-    &__submit-label {
+    &__send-button {
         display: flex !important;
         justify-content: flex-end;
         width: 100%;
         margin-top: 32px;
-        input {
+        button {
             @include gold-button;
             width: initial;
             cursor: pointer;
@@ -273,6 +302,17 @@
         color: red;
         ul {
             margin-top: 10px;
+        }
+    }
+    &__status-box {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid $gold;
+        margin-top: 30px;
+        span {
+            text-align: center;
         }
     }
 }

@@ -1,30 +1,46 @@
 <template>
     <section class="search">
         <div class="container">
-            <div class="search__wrapper">
-                <div v-for="(room, index) in rooms" :key="index" class="search__room">
+            <div class="search__filter-wrapper">
+                <div class="search__filter-first-row">
+
+                </div>
+                <div class="search__filter-second-row">
+                    <h3>Dodatkowe opcje</h3>
+                    <label for="sea_view">
+                        <input v-model="seaView" name="sea_view" type="checkbox">
+                        <p>Widok na morze</p>
+                    </label>
+                    <div class="search__filter-send-button">
+                        <button @click="filterResults">Wyślij wiadomość</button>
+                    </div>
+                </div>
+            </div>
+            <div class="search__wrapper" v-if="rooms">
+                <div v-for="(room, index) in rooms.data" :key="index" class="search__room">
                     <figure class="search__room-figure">
-                        <img :src="'/src/assets/images/' + room.thumbNail" alt="">
+                        <!-- <img :src="'bed.png' + room.thumbNail" alt=""> -->
+                        <img src="@/assets/images/bed.png">
                     </figure>
                     <div class="search__room-content">
                         <h3 class="search__room-title">
-                            {{ room.title }}
+                            {{ room.room_type.description }}
                         </h3>
                         <p class="search__room-desc">
-                            {{ room.desc }}
+                            {{ room.description }}
                         </p>
                         <div class="search__room-features">
                             <span>Udogodnienia</span>
                             <ul>
-                                <li v-for="(feature, index) in room.features" :key="index">{{ feature }}</li>
+                                <li v-for="(feature, index) in room.amenities" :key="index">{{ feature.name }}</li>
                             </ul>
                         </div>
                     </div>
                     <div class="search__price-col">
-                        <span class="search__price">{{ room.price }} zł/noc</span>
+                        <span class="search__price">{{ room.price_per_night }} zł/noc</span>
                         <span class="search__price-comment">Za osobę</span>
                         <RouterLink class="search__booking" to="/rezerwacja">Dokonaj rezerwacji</RouterLink>
-                        <RouterLink class="search__show-more" to="/rezerwacja">Zobacz więcej</RouterLink>
+                        <RouterLink class="search__show-more" :to="`/room/${room.id}`">Zobacz więcej</RouterLink>
                     </div>
                 </div>
             </div>
@@ -34,36 +50,43 @@
 
 
 <script>
+    import axios from 'axios';
+
     export default {
         data() {
             return {
-                rooms: [
-                    {
-                        id: '1',
-                        thumbNail: 'bed.png',
-                        title: 'Pokój Standard - 2+2',
-                        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
-                        features: ['Klimatyzacja', 'Room Service', 'WI-FI'],
-                        price: '250',
-                    },
-                    {
-                        id: '2',
-                        thumbNail: 'photo-umbrella.jpg',
-                        title: 'Pokój Standard - 2+2',
-                        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
-                        features: ['Klimatyzacja', 'Room Service', 'WI-FI'],
-                        price: '250',
-                    },
-                    {
-                        id: '3',
-                        thumbNail: 'restauracja-ramen.png',
-                        title: 'Pokój Standard - 2+2',
-                        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
-                        features: ['Klimatyzacja', 'Room Service', 'WI-FI'],
-                        price: '250',
-                    }
-                ]
+                rooms: [],
             }
+        },
+        methods: {
+            filterResults: function () {
+                axios.get('https://hotel.mpastuszek.pl/api/bookings/available-rooms', {
+                    // params: this.axiosParams
+                    params:
+                        // sea_view: 'true',
+                        this.axiosParams
+                    
+                })
+                .then(response => {
+                    this.rooms = response.data
+                    // console.log(axiosParams);
+                })
+            }
+        },
+        computed: {
+            axiosParams() {
+                const params = new URLSearchParams();
+                params.append('sea_view', 'true');
+                return params;
+            }
+        },
+        mounted() {
+            axios
+                .get('https://hotel.mpastuszek.pl/api/rooms')
+                .then(response => {
+                    this.rooms = response.data
+                    console.log(this.rooms);
+                })
         }
     }
 </script>
