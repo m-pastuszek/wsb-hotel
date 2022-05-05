@@ -3,7 +3,8 @@
         <div class="container">
             <div class="search__filter-wrapper">
                 <div class="search__filter-first-row">
-
+                    <input v-model="startDate" type="date" name="booking-start">
+                    <input v-model="endDate" type="date" name="booking-start">
                 </div>
                 <div class="search__filter-second-row">
                     <h3>Dodatkowe opcje</h3>
@@ -56,6 +57,12 @@
         data() {
             return {
                 rooms: [],
+                filters: [
+                    { sea_view: 'false' },
+                    { terrace: 'true' }
+                ],
+                startDate: null,
+                endDate: null,
             }
         },
         methods: {
@@ -71,21 +78,35 @@
                     this.rooms = response.data
                     // console.log(axiosParams);
                 })
+                console.log(this.startDate);
+                console.log(this.endDate);
             }
         },
         computed: {
             axiosParams() {
                 const params = new URLSearchParams();
-                params.append('sea_view', 'true');
+                this.filters.forEach((element) => {
+                    for (const [key, value] of Object.entries(element)) {
+                        if (value) {
+                            params.append(`${key}`, `${value}`);
+                        }
+                    }
+                });
+
+                
+
                 return params;
+                console.log();
+                // params.append('sea_view', 'true');
+
             }
         },
         mounted() {
             axios
-                .get('https://hotel.mpastuszek.pl/api/rooms')
+                .get('https://hotel.mpastuszek.pl/api/bookings/available-rooms')
                 .then(response => {
                     this.rooms = response.data
-                    console.log(this.rooms);
+                    // console.log(this.rooms);
                 })
         }
     }
