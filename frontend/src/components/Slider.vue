@@ -24,7 +24,10 @@
                     <swiper-slide v-for=" (slide, index) in slides " :key="index">
                         <div class="slider__slide-box">
                             <figure class="slider__picture">
-                                <img :src="'/src/assets/images/' + slide.imageUrl" :alt="slide.alt">
+                                <!-- <img :src="'/src/assets/images/' + slide.imageUrl" :alt="slide.alt"> -->
+                                <!-- <img :src="`${this.baseUrl}${slide.imageUrl}`" :alt="slide.alt"> -->
+                                <!-- <img :src="slide.imageUrl" :alt="slide.alt"> -->
+
                             </figure>
                             <h3 class="slider__slide-title">
                                 {{ slide.title }}
@@ -61,14 +64,15 @@
     import SwiperCore, { Autoplay,Navigation} from 'swiper/core';
     SwiperCore.use([Autoplay, Navigation]);
     // Import Swiper styles
-    import 'swiper/css/bundle';;
+    import 'swiper/css/bundle';
 
     export default {
         data() {
             return {
+                // baseUrl: process.env.VUE_APP_BASE_URL,
                 slides: [
                     {
-                        imageUrl: 'bed.png',
+                        imageUrl: "@/assets/images/bed.png",
                         alt: 'łóżko w pokoju hotelowym',
                         title: 'Lorem ipsum dolor 1',
                         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
@@ -76,14 +80,16 @@
                         buttonLink: '#',
                     },
                     {
-                        imageUrl: 'elegant-woman.png',
+                        imageUrl: "@/assets/images/bed.png",
+
                         title: 'Lorem ipsum dolor 2',
                         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
                         buttonText: 'Dokonaj rezerwacji',
                         buttonLink: '#',
                     },
                     {
-                        imageUrl: 'assian-buisness.png',
+                        imageUrl: "@/assets/images/bed.png",
+
                         title: 'Lorem ipsum dolor 3',
                         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
                         buttonText: 'Dokonaj rezerwacji',
@@ -91,6 +97,9 @@
                     }
                 ]
             }
+        },
+        methods: {
+            
         },
         components: {
             Swiper,

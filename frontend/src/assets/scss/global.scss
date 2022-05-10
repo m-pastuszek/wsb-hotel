@@ -48,6 +48,50 @@ body {
     }
 }
 
+input[type=checkbox] {
+    position: relative;
+      cursor: pointer;
+      outline: none;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      background-color: transparent;
+}
+input[type=checkbox]:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -2px;
+    left: -2px;
+    border: 1px solid $gold;
+
+    background-color: $white;
+}
+input[type=checkbox]:checked:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -2px;
+    left: -2px;
+    border: 1px solid $gold;
+}
+input[type=checkbox]:checked:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    display: block;
+    position: absolute;
+    // left: 0;
+    // top: 0;
+    top: 59%;
+    left: 64%;
+    transform: translate(-50%, -50%);
+    background-color: $lazure;
+}
+
 .container,
 .custom-container {
     max-width: (1160 + 60) * 1px;

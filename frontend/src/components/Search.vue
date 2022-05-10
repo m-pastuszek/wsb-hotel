@@ -9,8 +9,24 @@
                 <div class="search__filter-second-row">
                     <h3>Dodatkowe opcje</h3>
                     <label for="sea_view">
-                        <input v-model="seaView" name="sea_view" type="checkbox">
+                        <input v-model="seaView" @click="this.filters[0].sea_view = !this.filters[0].sea_view"  name="sea_view" type="checkbox">
                         <p>Widok na morze</p>
+                    </label>
+                    <label for="terrace">
+                        <input v-model="terrace" @click="this.filters[0].terrace = !this.filters[0].terrace"  name="terrace" type="checkbox">
+                        <p>Taras</p>
+                    </label>
+                    <label for="balcony">
+                        <input v-model="balcony" @click="this.filters[0].balcony = !this.filters[0].balcony"  name="balcony" type="checkbox">
+                        <p>Balkon</p>
+                    </label>
+                    <label for="air_conditioning">
+                        <input v-model="air_conditioning" @click="this.filters[0].air_conditioning = !this.filters[0].air_conditioning"  name="air_conditioning" type="checkbox">
+                        <p>Klimatyzacja</p>
+                    </label>
+                    <label for="adapted_for_disabled">
+                        <input v-model="adapted_for_disabled" @click="this.filters[0].adapted_for_disabled = !this.filters[0].adapted_for_disabled"  name="adapted_for_disabled" type="checkbox">
+                        <p>Przystosowanie dla niepełnosprawnych</p>
                     </label>
                     <div class="search__filter-send-button">
                         <button @click="filterResults">Wyślij wiadomość</button>
@@ -57,16 +73,34 @@
         data() {
             return {
                 rooms: [],
-                filters: [
-                    { sea_view: 'false' },
-                    { terrace: 'true' }
-                ],
+                seaView: false,
                 startDate: null,
                 endDate: null,
+                filters: [
+                    { sea_view: false },
+                    { terrace: false },
+                    { balcony: false },
+                    { air_conditioning: false },
+                    { aadapted_for_disabled: false },
+                    { occupancy: null },
+                    { start_date: null },
+                    { end_date: null },
+                ],
+                
             }
         },
         methods: {
             filterResults: function () {
+                this.filters[6].start_date = this.startDate;
+                this.filters[7].end_date = this.endDate;
+
+                console.log(this.filters);
+                // this.filters.forEach((element) => {
+                //     for (const [key, value] of Object.entries(element)) {
+                //         params.append(`${key}`, `${value}`);
+                //     }
+                // });
+
                 axios.get('https://hotel.mpastuszek.pl/api/bookings/available-rooms', {
                     // params: this.axiosParams
                     params:
@@ -84,6 +118,7 @@
         },
         computed: {
             axiosParams() {
+
                 const params = new URLSearchParams();
                 this.filters.forEach((element) => {
                     for (const [key, value] of Object.entries(element)) {
