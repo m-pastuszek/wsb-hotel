@@ -5,7 +5,7 @@
     <Hero/>
     <GoldBar/>
     <TitleAndImages/>
-    <Slider/>
+    <Slider :slides="slides"/>
     <BigTitleOnWhite/>
     <TitleAndTextOnBlack/>
     <ContactForm/>
@@ -25,6 +25,42 @@ import ContactForm from '@/components/ContactForm.vue'
 
 
 </script>
+<script>
+
+export default {
+    data() {
+      return {
+        slides: [
+          {
+              imageUrl: 'bed',
+              alt: 'łóżko w pokoju hotelowym',
+              title: 'Lorem ipsum dolor 1',
+              text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
+              buttonText: 'Dokonaj rezerwacji',
+              buttonLink: '#',
+          },
+          {
+              imageUrl: 'elegant-woman',
+
+              title: 'Lorem ipsum dolor 2',
+              text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
+              buttonText: 'Dokonaj rezerwacji',
+              buttonLink: '#',
+          },
+          {
+              imageUrl: 'assian-buisness',
+
+              title: 'Lorem ipsum dolor 3',
+              text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
+              buttonText: 'Dokonaj rezerwacji',
+              buttonLink: '#',
+          }
+      ]
+      }
+    }
+}
+</script>
+
 
 
 <style>

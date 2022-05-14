@@ -1,5 +1,5 @@
 <template>
-    <section class="contact-form">
+    <section class="contact-form" id="contact">
         <div class="container">
             <div class="contact-form__wrapper">
                 <div class="contact-form__left">

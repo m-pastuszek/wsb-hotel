@@ -1,5 +1,5 @@
 <template>
-    <section class="big-title-on-white">
+    <section class="big-title-on-white" id="spa">
         
         <div class="big-title-on-white__background-columns container">
             <div class="big-title-on-white__col-1"></div>
@@ -24,7 +24,7 @@
                 <p class="big-title-on-white__text">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.
                 </p>
-                <RouterLink class="big-title-on-white__button" to="/">
+                <RouterLink class="big-title-on-white__button" to="/rezerwacja">
                     Dokonaj rezerwacji
                 </RouterLink>
             </div>

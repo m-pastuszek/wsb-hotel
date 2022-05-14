@@ -2,14 +2,16 @@
 
 <template>
   <div class="booking">
-    <HeroSmall/>
+    <HeroSmall title="REZERWACJA" image="rezerwacja-hero"/>
     <Search/>
+    <ContactForm/>
   </div>
 </template>
 
 <script setup>
 import HeroSmall from '@/components/HeroSmall.vue'
 import Search from '@/components/Search.vue'
+import ContactForm from '@/components/ContactForm.vue'
 
 
 

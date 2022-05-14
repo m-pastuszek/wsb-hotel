@@ -1,5 +1,5 @@
 <template>
-    <section class="title-and-text-black">
+    <section class="title-and-text-black" id="restaurant">
         
         <div class="title-and-text-black__background-columns container">
             <div class="title-and-text-black__col-1">
@@ -25,7 +25,7 @@
                     <p class="title-and-text-black__text">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.
                     </p>
-                    <RouterLink class="title-and-text-black__button" to="/">
+                    <RouterLink class="title-and-text-black__button" to="/rezerwacja">
                         Dokonaj rezerwacji
                     </RouterLink>
                 </div>

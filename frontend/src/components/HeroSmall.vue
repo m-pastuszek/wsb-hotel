@@ -1,9 +1,9 @@
 <template>
     <section class="hero-small">
-        <img class="hero-small__background" src="@/assets/images/rezerwacja-hero.png" alt="">
+        <img class="hero-small__background" :src="getImageUrl(image)" alt="">
         <div class="container">
             <div class="hero-small__wrapper">
-                <h1>REZERWACJA</h1>
+                <h1>{{ title }}</h1>
             </div>
         </div>
     </section>
@@ -11,7 +11,26 @@
 
 
 <script>
-
+    export default {
+        data() {
+            return {
+            }
+        },
+        props: {
+            title: String,
+            image: String,
+            assetsImage: Boolean,
+        },
+        methods: {
+            getImageUrl(name) {
+                if (this.assetsImage === true) {
+                    return this.image;
+                } else {
+                    return new URL(`../assets/images/${name}.png`, import.meta.url).href
+                }
+			}
+        }
+    }
 </script>
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
@@ -22,7 +41,7 @@
 .hero-small {
     position: relative;
     min-height: 450px;
-    margin-bottom: 32px;
+    margin-bottom: 64px;
     &__background {
         width: 100%;
         height: 100%;
@@ -45,6 +64,7 @@
             font-weight: 700;
             text-align: center;
             color: $white;
+            text-transform: uppercase;
             @include breakpoint-max('tablet') {
                 font-size: 10rem;
             }

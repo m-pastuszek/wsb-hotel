@@ -6,7 +6,6 @@ class="header"
     <div class="container">
         <div class="header__wrapper">
             <RouterLink to="/">
-
                 <svg class="header__logo" width="177" height="104" viewBox="0 0 177 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="177" height="104" fill="white"/>
                     <path d="M41.4483 35.1392H48.4625C49.5364 35.1601 50.5896 34.8417 51.4726 34.2291C52.3089 33.6188 52.9899 32.8199 53.4604 31.897C53.9352 30.9434 54.1784 29.8911 54.1704 28.8255C54.1696 28.0473 54.0252 27.276 53.7444 26.5504C53.4514 25.8166 53.0281 25.1421 52.4949 24.5596C51.9801 23.9601 51.353 23.4673 50.6491 23.1091C49.9186 22.7407 49.1098 22.5553 48.2921 22.5688H40V42.761H41.4483V35.1392ZM41.4483 23.877H48.2353C49.0349 23.8717 49.8172 24.1098 50.4787 24.5596C51.1444 25.029 51.6974 25.641 52.0974 26.3513C52.4943 27.1151 52.699 27.9645 52.6937 28.8255C52.6969 29.6586 52.5226 30.4827 52.1826 31.2429C51.8642 31.9802 51.3542 32.6186 50.7059 33.0915C50.0381 33.5753 49.2296 33.8252 48.4057 33.8025H41.4483V23.877Z" fill="#252525"/>
@@ -49,7 +48,7 @@ class="header"
                     </li>
                     <li class="header__menu-element">
                         <RouterLink to="/">
-                            Spa
+                            SPA
                         </RouterLink>
                     </li>
                     <li class="header__menu-element">
@@ -102,10 +101,18 @@ export default {
                 document.querySelector('.header').classList.remove("header--scrolled");
 
             }
-        }
+        },
+        // scrollMeto(section) {
+        //     scrollBehavior (to, from, savedPosition) {
+        //         return {
+        //             el: '#slider'
+        //         }
+        //     }
+        // }
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
+        console.log(window.location.origin);
     }
 }
 

@@ -1,5 +1,5 @@
 <template>
-    <section class="slider">
+    <section class="slider" :class="{ 'slider--single': isSingle}" id="slider">
             <h2 class="slider__title">
                 Hotel
             </h2>
@@ -24,10 +24,8 @@
                     <swiper-slide v-for=" (slide, index) in slides " :key="index">
                         <div class="slider__slide-box">
                             <figure class="slider__picture">
-                                <!-- <img :src="'/src/assets/images/' + slide.imageUrl" :alt="slide.alt"> -->
-                                <!-- <img :src="`${this.baseUrl}${slide.imageUrl}`" :alt="slide.alt"> -->
-                                <img :src="getImageUrl(slide.imageUrl)" :alt="slide.alt">
-
+                                <img v-if="this.assetsImage == false" :src="getImageUrl(slide.imageUrl)" :alt="slide.alt">
+                                <img v-if="this.assetsImage" :src="slide.url" :alt="slide.alt">
                             </figure>
                             <h3 class="slider__slide-title">
                                 {{ slide.title }}
@@ -67,40 +65,22 @@
     import 'swiper/css/bundle';
 
     export default {
+        props: {
+            slides: Array,
+            isSingle: Boolean,
+            assetsImage: Boolean,
+        },
         data() {
             return {
-                // baseUrl: process.env.VUE_APP_BASE_URL,
-                slides: [
-                    {
-                        imageUrl: 'bed',
-                        alt: 'łóżko w pokoju hotelowym',
-                        title: 'Lorem ipsum dolor 1',
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
-                        buttonText: 'Dokonaj rezerwacji',
-                        buttonLink: '#',
-                    },
-                    {
-                        imageUrl: 'elegant-woman',
-
-                        title: 'Lorem ipsum dolor 2',
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
-                        buttonText: 'Dokonaj rezerwacji',
-                        buttonLink: '#',
-                    },
-                    {
-                        imageUrl: 'assian-buisness',
-
-                        title: 'Lorem ipsum dolor 3',
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
-                        buttonText: 'Dokonaj rezerwacji',
-                        buttonLink: '#',
-                    }
-                ]
             }
         },
         methods: {
             getImageUrl(name) {
-				return new URL(`../assets/images/${name}.png`, import.meta.url).href
+                if (this.assetsImage === true) {
+                    return image;
+                } else {
+                    return new URL(`../assets/images/${name}.png`, import.meta.url).href
+                }
 			}
         },
         components: {
@@ -123,6 +103,19 @@
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+    &--single {
+        background-color: $white;
+        .slider__title, .slider__slide-title, .slider__slide-text, .slider__slide-button {
+            display: none;
+        }
+        .slider__picture {
+            margin-bottom: 0;
+        }
+        .swiper-button-prev, .swiper-button-next {
+            top: 50% !important;
+            transform: translateY(-50%);
+        }
+    }
     &__wrapper {
         width: 128%;
         position: relative;
