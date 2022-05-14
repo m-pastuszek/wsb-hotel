@@ -44,10 +44,10 @@ class RoomEditScreen extends Screen
     public function query(Room $room): array
     {
         $this->exists = $room->exists;
-
         if($this->exists){
             $this->name = 'Edycja pokoju';
             $this->description = "Edycja pokoju hotelowego";
+            $room->load('attachment'); // załadowanie załączników
         } else {
             $this->name = 'Dodawanie pokoju';
             $this->description = 'Dodawanie nowego pokoju hotelowego.';
@@ -156,7 +156,10 @@ class RoomEditScreen extends Screen
                 // TODO: Czy zdjęcia się poprawnie podpinają?
                 Upload::make('images')
                     ->title('Zdjęcia pokoju')
-                    ->acceptedFiles('image/*')
+                    ->acceptedFiles('image/*'),
+
+                Button::make('Usuń poprzednie zdjęcia z bazy')
+                    ->method('deleteRoomPhotos'),
             ])
         ];
     }
@@ -193,9 +196,19 @@ class RoomEditScreen extends Screen
     public function remove(Room $room): RedirectResponse
     {
         $room->delete();
-
+        $room->attachment->each->delete();
         Alert::success('Pomyślnie usunięto pokój.');
 
         return redirect()->route('platform.room.list');
+    }
+
+    /**
+     * Usuwanie poprzednich zdjęć z bazy.
+     * @param Room $room
+     * @return void
+     */
+    public function deleteRoomPhotos(Room $room) {
+        $room->attachment->each->delete();
+        Alert::success('Pomyślnie usunięto zdjęcia tego pokoju z bazy danych.');
     }
 }
