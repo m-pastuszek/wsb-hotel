@@ -3,35 +3,58 @@
         <div class="container">
             <div class="search__filter-wrapper">
                 <div class="search__filter-first-row">
-                    <input v-model="startDate" type="date" name="booking-start">
-                    <input v-model="endDate" type="date" name="booking-start">
+                    <div class="search__date">
+                        <span>Termin</span>
+                        <div class="search__date-inputs">
+                            <input v-model="startDate" min="2022-05-14" type="date" name="booking-start">
+                            <input v-model="endDate" :min="startDate" type="date" name="booking-start">
+                        </div>
+                    </div>
+                    <div class="search__occupancy">
+                        <span>Ilość osób</span>
+                        <select name="occupancy" id="occupancy">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="search__filter-second-row">
                     <h3>Dodatkowe opcje</h3>
-                    <label for="sea_view">
-                        <input v-model="seaView" @click="this.filters[0].sea_view = !this.filters[0].sea_view"  name="sea_view" type="checkbox">
-                        <p>Widok na morze</p>
-                    </label>
-                    <label for="terrace">
-                        <input v-model="terrace" @click="this.filters[0].terrace = !this.filters[0].terrace"  name="terrace" type="checkbox">
-                        <p>Taras</p>
-                    </label>
-                    <label for="balcony">
-                        <input v-model="balcony" @click="this.filters[0].balcony = !this.filters[0].balcony"  name="balcony" type="checkbox">
-                        <p>Balkon</p>
-                    </label>
-                    <label for="air_conditioning">
-                        <input v-model="air_conditioning" @click="this.filters[0].air_conditioning = !this.filters[0].air_conditioning"  name="air_conditioning" type="checkbox">
-                        <p>Klimatyzacja</p>
-                    </label>
-                    <label for="adapted_for_disabled">
-                        <input v-model="adapted_for_disabled" @click="this.filters[0].adapted_for_disabled = !this.filters[0].adapted_for_disabled"  name="adapted_for_disabled" type="checkbox">
-                        <p>Przystosowanie dla niepełnosprawnych</p>
-                    </label>
-                    <div class="search__filter-send-button">
-                        <button @click="filterResults">Wyślij wiadomość</button>
+                    <div class="search__filter-features">
+                        <label for="sea_view">
+                            <input v-model="seaView" @click="this.filters[0].sea_view = !this.filters[0].sea_view"  name="sea_view" type="checkbox">
+                            <p>Widok na morze</p>
+                        </label>
+                        <label for="terrace">
+                            <input v-model="terrace" @click="this.filters[0].terrace = !this.filters[0].terrace"  name="terrace" type="checkbox">
+                            <p>Taras</p>
+                        </label>
+                        <label for="balcony">
+                            <input v-model="balcony" @click="this.filters[0].balcony = !this.filters[0].balcony"  name="balcony" type="checkbox">
+                            <p>Balkon</p>
+                        </label>
+                        <label for="air_conditioning">
+                            <input v-model="air_conditioning" @click="this.filters[0].air_conditioning = !this.filters[0].air_conditioning"  name="air_conditioning" type="checkbox">
+                            <p>Klimatyzacja</p>
+                        </label>
+                        <label for="adapted_for_disabled">
+                            <input v-model="adapted_for_disabled" @click="this.filters[0].adapted_for_disabled = !this.filters[0].adapted_for_disabled"  name="adapted_for_disabled" type="checkbox">
+                            <p>Przystosowanie dla niepełnosprawnych</p>
+                        </label>
+                        <div class="search__filter-send-button">
+                            <button @click="filterResults">Szukaj</button>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <p v-if="this.searchStatus" class="search__no-results">Brak wyników wyszukiwania. Spróbuj wybrać inne kryteria.</p>
+            
+            <div class="search__loader-box">
+                <div class="lds-hourglass"></div>
             </div>
             <div class="search__wrapper" v-if="rooms">
                 <div v-for="(room, index) in rooms.data" :key="index" class="search__room">
@@ -72,7 +95,10 @@
     export default {
         data() {
             return {
-                rooms: [],
+                searchStatus: false,
+                rooms: [
+                    {data: []}
+                ],
                 seaView: false,
                 startDate: null,
                 endDate: null,
@@ -93,27 +119,28 @@
             filterResults: function () {
                 this.filters[6].start_date = this.startDate;
                 this.filters[7].end_date = this.endDate;
+                
+                document.querySelector('.lds-hourglass').style.display = 'inline-block';
 
-                console.log(this.filters);
-                // this.filters.forEach((element) => {
-                //     for (const [key, value] of Object.entries(element)) {
-                //         params.append(`${key}`, `${value}`);
-                //     }
-                // });
+                
 
                 axios.get('https://hotel.mpastuszek.pl/api/bookings/available-rooms', {
-                    // params: this.axiosParams
+                    
                     params:
-                        // sea_view: 'true',
                         this.axiosParams
+                        
                     
                 })
                 .then(response => {
-                    this.rooms = response.data
-                    // console.log(axiosParams);
+                    this.rooms = response.data;
+                    document.querySelector('.lds-hourglass').style.display = 'none';
+
+                    if (this.rooms.data.length == 0) {
+                        this.searchStatus = true;
+                    } else {
+                        this.searchStatus = false;
+                    }
                 })
-                console.log(this.startDate);
-                console.log(this.endDate);
             }
         },
         computed: {
@@ -128,20 +155,15 @@
                     }
                 });
 
-                
-
                 return params;
-                console.log();
-                // params.append('sea_view', 'true');
-
             }
         },
         mounted() {
             axios
                 .get('https://hotel.mpastuszek.pl/api/bookings/available-rooms')
                 .then(response => {
-                    this.rooms = response.data
-                    // console.log(this.rooms);
+                    this.rooms = response.data;
+                    document.querySelector('.lds-hourglass').style.display = 'none';
                 })
         }
     }
@@ -153,8 +175,48 @@
 @import "@/assets/scss/mixins.scss";
 
 .search {
+
+    .lds-hourglass {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+
+    }
+    .lds-hourglass:after {
+        content: " ";
+        display: block;
+        border-radius: 50%;
+        width: 0;
+        height: 0;
+        margin: 8px;
+        box-sizing: border-box;
+        border: 32px solid $gold;
+        border-color: $gold transparent $gold transparent;
+        animation: lds-hourglass 1.2s infinite;
+    }
+    @keyframes lds-hourglass {
+        0% {
+            transform: rotate(0);
+            animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        }
+        50% {
+            transform: rotate(900deg);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        100% {
+            transform: rotate(1800deg);
+        }
+    }
+
+    &__loader-box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     &__wrapper {
-        
+        margin-bottom: 108px;
     }
     &__room {
         display: flex;
@@ -264,6 +326,131 @@
     }
     &__show-more {
         color: $gold;
+    }
+    &__filter-wrapper {
+        margin-bottom: 108px;
+    }
+    &__filter-first-row {
+        display: flex;
+        margin-bottom: 25px;
+        @include breakpoint-max('tablet') {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+        & > div {
+            display: flex;
+            flex-direction: column;
+            margin-right: 82px;
+            & > span {
+                font-weight: 600;
+                font-size: 1.6rem;
+                line-height: 2rem;
+                color: $black;
+                margin-bottom: 20px;
+            }
+        }
+    }
+    &__date-inputs {
+        display: flex;
+        flex-direction: row;
+        @include breakpoint-max('tablet') {
+            margin-bottom: 30px;
+        }
+        @include breakpoint-max('mobile') {
+            flex-direction: column;
+            width: 100%;
+        }
+        input {
+            border: 1px solid $gold;
+            padding: 8px 10px;
+            font-family: "Montserrat", sans-serif;
+            border-radius: 3px;
+            &:first-child {
+                margin-right: 20px;
+                @include breakpoint-max('mobile') {
+                    margin-right: 0;
+                    margin-bottom: 20px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    &__occupancy {
+        select {
+            border: 1px solid $gold;
+            padding: 8px 10px;
+            font-family: "Montserrat", sans-serif;
+            border-radius: 3px;
+        }
+    }
+    &__filter-second-row {
+        & > h3 {
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 2rem;
+            color: $black;
+            margin-bottom: 20px;
+        } 
+    }
+    &__filter-features {
+        display: flex;
+        align-items: center;
+        @include breakpoint-max('tablet') {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+        label {
+            display: flex;
+            align-items: center;
+            margin-right: 32px;
+            @include breakpoint-max('tablet') {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            p {
+                display: block;
+                margin-bottom: 4px;
+            }
+        }
+    }
+    &__filter-send-button {
+        @include breakpoint-max('tablet') {
+            margin-top: 20px;
+        }
+        @include breakpoint-max('mobile') {
+            width: 100%;
+        }
+        button {
+            min-width: 275px;
+            padding: 12px 20px;
+            background-color: $gold;
+            border: 1px solid $gold;
+            border-radius: 33px;
+            font-weight: 600;
+            font-size: 1.4rem;
+            line-height: 1.7rem;
+            color: $white;
+            font-family: "Montserrat", sans-serif;
+            filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
+            cursor: pointer;
+            transition: .3s ease;
+            @include breakpoint-max('mobile') {
+                width: 100%;
+            }
+            &:focus {
+                outline: none;
+            }
+            &:hover {
+                background-color: #FFFFFF;
+                color: #252525 !important;
+            }
+        }
+    }
+    &__no-results {
+        margin-bottom: 108px;
     }
 }
 </style>

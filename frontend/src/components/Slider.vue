@@ -26,7 +26,7 @@
                             <figure class="slider__picture">
                                 <!-- <img :src="'/src/assets/images/' + slide.imageUrl" :alt="slide.alt"> -->
                                 <!-- <img :src="`${this.baseUrl}${slide.imageUrl}`" :alt="slide.alt"> -->
-                                <!-- <img :src="slide.imageUrl" :alt="slide.alt"> -->
+                                <img :src="getImageUrl(slide.imageUrl)" :alt="slide.alt">
 
                             </figure>
                             <h3 class="slider__slide-title">
@@ -72,7 +72,7 @@
                 // baseUrl: process.env.VUE_APP_BASE_URL,
                 slides: [
                     {
-                        imageUrl: "@/assets/images/bed.png",
+                        imageUrl: 'bed',
                         alt: 'łóżko w pokoju hotelowym',
                         title: 'Lorem ipsum dolor 1',
                         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
@@ -80,7 +80,7 @@
                         buttonLink: '#',
                     },
                     {
-                        imageUrl: "@/assets/images/bed.png",
+                        imageUrl: 'elegant-woman',
 
                         title: 'Lorem ipsum dolor 2',
                         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
@@ -88,7 +88,7 @@
                         buttonLink: '#',
                     },
                     {
-                        imageUrl: "@/assets/images/bed.png",
+                        imageUrl: 'assian-buisness',
 
                         title: 'Lorem ipsum dolor 3',
                         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nec nibh arcu nec donec. Egestas amet commodo, amet, eget risus purus. Sed mi nunc, quis odio id cras pellentesque. Adipiscing aenean etiam urna blandit. Non vitae interdum arcu sit nascetur turpis lorem sit.',
@@ -99,7 +99,9 @@
             }
         },
         methods: {
-            
+            getImageUrl(name) {
+				return new URL(`../assets/images/${name}.png`, import.meta.url).href
+			}
         },
         components: {
             Swiper,

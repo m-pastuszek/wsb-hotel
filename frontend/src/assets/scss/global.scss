@@ -86,8 +86,8 @@ input[type=checkbox]:checked:after {
     position: absolute;
     // left: 0;
     // top: 0;
-    top: 59%;
-    left: 64%;
+    top: 8px;
+    left: 8px;
     transform: translate(-50%, -50%);
     background-color: $lazure;
 }
