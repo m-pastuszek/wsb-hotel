@@ -10,12 +10,16 @@ use App\Models\RoomType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\Cropper;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Picture;
 use Orchid\Screen\Fields\Quill;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Screen;
+use Orchid\Support\Color;
 use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Layout;
 
@@ -149,17 +153,25 @@ class RoomEditScreen extends Screen
                         'rightAlign' => false
                     ])->required(),
 
-                Quill::make('room.description')
+                TextArea::make('room.description')
                     ->title('Opis pokoju')
-                    ->placeholder('Opis pokoju hotelowego.'),
+                    ->placeholder('Opis pokoju hotelowego.')
+                    ->rows(5),
 
-                // TODO: Czy zdjęcia się poprawnie podpinają?
-                Upload::make('images')
+                Picture::make('room.main_photo')
+                    ->title('Główne zdjęcie pokoju')
+                    ->acceptedFiles('image/*')
+                    ->targetRelativeUrl(),
+
+                Upload::make('gallery_images')
                     ->title('Zdjęcia pokoju')
-                    ->acceptedFiles('image/*'),
+                    ->acceptedFiles('image/*')
+                    ->groups('room_gallery')
+                    ->maxFiles(3),
 
                 Button::make('Usuń poprzednie zdjęcia z bazy')
-                    ->method('deleteRoomPhotos'),
+                    ->method('deleteRoomPhotos')
+                    ->type(Color::DANGER())
             ])
         ];
     }
@@ -175,7 +187,7 @@ class RoomEditScreen extends Screen
         $room->fill($request->get('room'))->save();
 
         $room->attachment()->syncWithoutDetaching(
-            $request->input('images', [])
+            $request->input('gallery_images', [])
         );
 
         // Obsługa relacji many-to-many dla udogodnień.

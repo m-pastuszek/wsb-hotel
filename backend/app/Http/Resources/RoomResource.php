@@ -25,7 +25,10 @@ class RoomResource extends JsonResource
             'room_type' => new RoomTypeResource($this->roomType),
             'bed_type' => new RoomBedTypeResource($this->bedType),
             'status' => new RoomStatusResource($this->status),
-            'photos' =>  PhotoResource::collection($this->attachment()->get()),
+            'photos' =>  [
+                'hero' => $this->main_photo,
+                'gallery' => PhotoResource::collection($this->attachment()->get())
+            ],
             'amenities' =>  new RoomStatusResource($this->amenities),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

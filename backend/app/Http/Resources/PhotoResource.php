@@ -17,7 +17,6 @@ class PhotoResource extends JsonResource
     {
 //        return parent::toArray($request);
         return [
-            'photo_id' => $this->id,
             'url' => $this->url()
         ];
     }

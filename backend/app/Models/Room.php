@@ -26,6 +26,7 @@ class Room extends Model
         'room_number',
         'floor',
         'description',
+        'main_photo',
         'images',
         'price_per_night',
         'room_type_id',
