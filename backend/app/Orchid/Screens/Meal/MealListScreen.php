@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Meal;
 
 use App\Models\Meal;
 use App\Orchid\Layouts\MealListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
@@ -44,11 +45,12 @@ class MealListScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [
+        if (Auth::user()->hasAccess('platform.systems.management')) return [
             Link::make('Dodaj nowe wyżywienie')
                 ->icon('plus')
                 ->route('platform.meal.edit')
         ];
+        else return [];
     }
 
     /**

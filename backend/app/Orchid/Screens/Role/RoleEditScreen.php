@@ -31,12 +31,7 @@ class RoleEditScreen extends Screen
      *
      * @var string
      */
-    public $description = 'Zarządzanie prawami dostępu do systemu zarządzania rezerwacjami.';
-
-    /**
-     * @var string
-     */
-    public $permission = 'platform.systems.roles';
+    public $description = 'Zarządzanie prawami dostępu do systemu zarządzania rezerwacjami';
 
     /**
      * @var bool
@@ -68,11 +63,11 @@ class RoleEditScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Button::make(__('Save'))
+            Button::make(__('Zapisz'))
                 ->icon('check')
                 ->method('save'),
 
-            Button::make(__('Remove'))
+            Button::make(__('Usuń'))
                 ->icon('trash')
                 ->method('remove')
                 ->canSee($this->exist),
@@ -90,14 +85,14 @@ class RoleEditScreen extends Screen
             Layout::block([
                 RoleEditLayout::class,
             ])
-                ->title('Role')
-                ->description('A role is a collection of privileges (of possibly different services like the Users service, Moderator, and so on) that grants users with that role the ability to perform certain tasks or operations.'),
+                ->title('Rola')
+                ->description('Rola jest zestawem uprawnień, które dają użytkownikom z tą rolą możliwość wykonywania określonych zadań'),
 
             Layout::block([
                 RolePermissionLayout::class,
             ])
-                ->title('Permission/Privilege')
-                ->description('A privilege is necessary to perform certain tasks and operations in an area.'),
+                ->title('Uprawnienie')
+                ->description('Uprawnienie jest konieczne do wykonywania określonych zadań'),
         ];
     }
 
@@ -127,7 +122,7 @@ class RoleEditScreen extends Screen
 
         $role->save();
 
-        Toast::info(__('Role was saved'));
+        Toast::info(__('Rola została zapisana'));
 
         return redirect()->route('platform.systems.roles');
     }
@@ -143,7 +138,7 @@ class RoleEditScreen extends Screen
     {
         $role->delete();
 
-        Toast::info(__('Role was removed'));
+        Toast::info(__('Rola została usunięta'));
 
         return redirect()->route('platform.systems.roles');
     }

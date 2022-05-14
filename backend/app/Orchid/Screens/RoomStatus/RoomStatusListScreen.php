@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\RoomStatus;
 
 use App\Models\RoomStatus;
 use App\Orchid\Layouts\RoomStatusListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
@@ -42,11 +43,12 @@ class RoomStatusListScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [
+        if (Auth::user()->hasAccess('platform.systems.management')) return [
             Link::make('Dodaj nowy status')
                 ->icon('plus')
                 ->route('platform.room-status.edit')
         ];
+        else return [];
     }
 
     /**

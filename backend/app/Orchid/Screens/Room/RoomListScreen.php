@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Room;
 
 use App\Models\Room;
 use App\Orchid\Layouts\RoomListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
@@ -42,11 +43,12 @@ class RoomListScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [
+        if (Auth::user()->hasAccess('platform.systems.management')) return [
             Link::make('Dodaj nowy pokój')
                 ->icon('plus')
                 ->route('platform.room.edit')
         ];
+        else return [];
     }
 
     /**

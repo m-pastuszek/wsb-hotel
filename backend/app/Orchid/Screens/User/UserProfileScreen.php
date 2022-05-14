@@ -24,14 +24,14 @@ class UserProfileScreen extends Screen
      *
      * @var string
      */
-    public $name = 'My account';
+    public $name = 'Moje konto';
 
     /**
      * Display header description.
      *
      * @var string
      */
-    public $description = 'Update your account details such as name, email address and password';
+    public $description = 'Zaktualizuj dane swojego konta użykownika, takie jak nazwa, adres e-mail i hasło';
 
     /**
      * Query data.
@@ -64,20 +64,20 @@ class UserProfileScreen extends Screen
     {
         return [
             Layout::block(UserEditLayout::class)
-                ->title(__('Profile Information'))
-                ->description(__("Update your account's profile information and email address."))
+                ->title(__('Informacje o profilu użytkownika'))
+                ->description(__("Aktualizacja informacji o profilu użytkownika i adresie e-mail"))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('Zapisz'))
                         ->type(Color::DEFAULT())
                         ->icon('check')
                         ->method('save')
                 ),
 
             Layout::block(ProfilePasswordLayout::class)
-                ->title(__('Update Password'))
-                ->description(__('Ensure your account is using a long, random password to stay secure.'))
+                ->title(__('Zaktualizuj hasło'))
+                ->description(__('Użyj długiego, losowego ciągu znaków aby zwiększyć bezpieczeństwo swojego konta'))
                 ->commands(
-                    Button::make(__('Update password'))
+                    Button::make(__('Zaktualizuj hasło'))
                         ->type(Color::DEFAULT())
                         ->icon('check')
                         ->method('changePassword')
@@ -102,7 +102,7 @@ class UserProfileScreen extends Screen
             ->fill($request->get('user'))
             ->save();
 
-        Toast::info(__('Profile updated.'));
+        Toast::info(__('Profil zaktualizowany'));
     }
 
     /**
@@ -119,6 +119,6 @@ class UserProfileScreen extends Screen
             $user->password = Hash::make($request->get('password'));
         })->save();
 
-        Toast::info(__('Password changed.'));
+        Toast::info(__('Hasło zostało zmienione'));
     }
 }

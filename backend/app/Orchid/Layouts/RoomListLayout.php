@@ -39,7 +39,7 @@ class RoomListLayout extends Table
                 })->sort()->width('100px'),
             TD::make('floor', 'Piętro')->component(Floor::class),
             TD::make('room_type_id', 'Typ pokoju')->render(function ($room) {
-               return $room->type->name;
+               return $room->roomType->name;
             }),
             TD::make('bed_type_id', 'Rodzaj łóżek')->render(function ($room) {
                 return $room->bedType->name;

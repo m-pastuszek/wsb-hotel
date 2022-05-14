@@ -36,10 +36,10 @@ class BookingListLayout extends Table
             TD::make('time_to', 'Do'),
             TD::make('amount', 'Koszt rezerwacji'),
             TD::make('created_at', 'Data dodania')->render(function ($booking) {
-                return view('components.columns.date', ['date' => $booking->created_at]);
+                return view('components.columns.date-time', ['datetime' => $booking->created_at]);
             })->sort(),
             TD::make('updated_at', 'Ostatnia aktualizacja')->render(function ($booking) {
-                return view('components.columns.date-time', ['date' => $booking->updated_at]);
+                return view('components.columns.date-time', ['datetime' => $booking->updated_at]);
             })->sort(),
         ];
     }
