@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Amenity;
 
 use App\Models\Amenity;
 use App\Orchid\Layouts\AmenityListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layout;
@@ -44,11 +45,12 @@ class AmenityListScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [
+        if (Auth::user()->hasAccess('platform.systems.management')) return [
             Link::make('Dodaj nowe udogodnienie')
                 ->icon('plus')
                 ->route('platform.amenity.edit')
         ];
+        else return [];
     }
 
     /**

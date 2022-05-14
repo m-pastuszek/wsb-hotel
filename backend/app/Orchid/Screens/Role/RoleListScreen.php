@@ -28,11 +28,6 @@ class RoleListScreen extends Screen
     public $description = 'Zarządzanie prawami dostępu do systemu zarządzania rezerwacjami.';
 
     /**
-     * @var string
-     */
-    public $permission = 'platform.systems.roles';
-
-    /**
      * Query data.
      *
      * @return array

@@ -60,59 +60,62 @@ Route::screen('profile', UserProfileScreen::class)
             ->push(__('Profile'), route('platform.profile'));
     });
 
-// Platform > System > Users
-Route::screen('users/{user}/edit', UserEditScreen::class)
-    ->name('platform.systems.users.edit')
-    ->breadcrumbs(function (Trail $trail, $user) {
-        return $trail
-            ->parent('platform.systems.users')
-            ->push(__('User'), route('platform.systems.users.edit', $user));
-    });
+
+Route::middleware(['access:platform.systems.security'])->group(function() {
+    // Platform > System > Users
+    Route::screen('users/{user}/edit', UserEditScreen::class)
+        ->name('platform.systems.users.edit')
+        ->breadcrumbs(function (Trail $trail, $user) {
+            return $trail
+                ->parent('platform.systems.users')
+                ->push(__('User'), route('platform.systems.users.edit', $user));
+        });
 
 // Platform > System > Users > Create
-Route::screen('users/create', UserEditScreen::class)
-    ->name('platform.systems.users.create')
-    ->breadcrumbs(function (Trail $trail) {
-        return $trail
-            ->parent('platform.systems.users')
-            ->push(__('Create'), route('platform.systems.users.create'));
-    });
+    Route::screen('users/create', UserEditScreen::class)
+        ->name('platform.systems.users.create')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.systems.users')
+                ->push(__('Create'), route('platform.systems.users.create'));
+        });
 
 // Platform > System > Users > User
-Route::screen('users', UserListScreen::class)
-    ->name('platform.systems.users')
-    ->breadcrumbs(function (Trail $trail) {
-        return $trail
-            ->parent('platform.index')
-            ->push(__('Users'), route('platform.systems.users'));
-    });
+    Route::screen('users', UserListScreen::class)
+        ->name('platform.systems.users')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Users'), route('platform.systems.users'));
+        });
 
-// Platform > System > Roles > Role
-Route::screen('roles/{roles}/edit', RoleEditScreen::class)
-    ->name('platform.systems.roles.edit')
-    ->breadcrumbs(function (Trail $trail, $role) {
-        return $trail
-            ->parent('platform.systems.roles')
-            ->push(__('Role'), route('platform.systems.roles.edit', $role));
-    });
+    // Platform > System > Roles > Role
+    Route::screen('roles/{roles}/edit', RoleEditScreen::class)
+        ->name('platform.systems.roles.edit')
+        ->breadcrumbs(function (Trail $trail, $role) {
+            return $trail
+                ->parent('platform.systems.roles')
+                ->push(__('Role'), route('platform.systems.roles.edit', $role));
+        });
 
 // Platform > System > Roles > Create
-Route::screen('roles/create', RoleEditScreen::class)
-    ->name('platform.systems.roles.create')
-    ->breadcrumbs(function (Trail $trail) {
-        return $trail
-            ->parent('platform.systems.roles')
-            ->push(__('Create'), route('platform.systems.roles.create'));
-    });
+    Route::screen('roles/create', RoleEditScreen::class)
+        ->name('platform.systems.roles.create')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.systems.roles')
+                ->push(__('Create'), route('platform.systems.roles.create'));
+        });
 
 // Platform > System > Roles
-Route::screen('roles', RoleListScreen::class)
-    ->name('platform.systems.roles')
-    ->breadcrumbs(function (Trail $trail) {
-        return $trail
-            ->parent('platform.index')
-            ->push(__('Roles'), route('platform.systems.roles'));
-    });
+    Route::screen('roles', RoleListScreen::class)
+        ->name('platform.systems.roles')
+        ->breadcrumbs(function (Trail $trail) {
+            return $trail
+                ->parent('platform.index')
+                ->push(__('Roles'), route('platform.systems.roles'));
+        });
+});
 
 // Example...
 Route::screen('example', ExampleScreen::class)
@@ -133,38 +136,47 @@ Route::screen('example-advanced', ExampleFieldsAdvancedScreen::class)->name('pla
 //Route::screen('idea', 'Idea::class','platform.screens.idea');
 
 // Amenities (Udogodnienia)
-Route::screen('amenity/{amenity?}', AmenityEditScreen::class)->name('platform.amenity.edit');
+Route::screen('amenity/{amenity?}', AmenityEditScreen::class)->name('platform.amenity.edit')
+    ->middleware('access:platform.systems.management');
 Route::screen('amenities', AmenityListScreen::class)->name('platform.amenity.list');
 
 // Bookings
-Route::screen('booking/{booking?}', BookingEditScreen::class)->name('platform.booking.edit');
+Route::screen('booking/{booking?}', BookingEditScreen::class)->name('platform.booking.edit')
+    ->middleware('access:platform.systems.reception');
 Route::screen('bookings', BookingListScreen::class)->name('platform.booking.list');
 
 // BookingStatuses
-Route::screen('booking-status/{bookingstatus?}', BookingStatusEditScreen::class)->name('platform.booking-status.edit');
+Route::screen('booking-status/{bookingstatus?}', BookingStatusEditScreen::class)->name('platform.booking-status.edit')
+    ->middleware('access:platform.systems.management');
 Route::screen('booking-statuses', BookingStatusListScreen::class)->name('platform.booking-status.list');
 
 // Customers
-Route::screen('customer/{customer?}', CustomerEditScreen::class)->name('platform.customer.edit');
+Route::screen('customer/{customer?}', CustomerEditScreen::class)->name('platform.customer.edit')
+    ->middleware('access:platform.systems.reception');
 Route::screen('customers', CustomerListScreen::class)->name('platform.customer.list');
 
 // RoomTypes
-Route::screen('meal/{meal?}', MealEditScreen::class)->name('platform.meal.edit');
+Route::screen('meal/{meal?}', MealEditScreen::class)->name('platform.meal.edit')
+    ->middleware('access:platform.systems.management');
 Route::screen('meals', MealListScreen::class)->name('platform.meal.list');
 
 // Rooms
-Route::screen('room/{room?}', RoomEditScreen::class)->name('platform.room.edit');
+Route::screen('room/{room?}', RoomEditScreen::class)->name('platform.room.edit')
+    ->middleware('access:platform.systems.management');
 Route::screen('rooms', RoomListScreen::class)->name('platform.room.list');
 
 // RoomBedTypes
-Route::screen('room-bed-type/{roombedtype?}', RoomBedTypeEditScreen::class)->name('platform.room-bed-type.edit');
+Route::screen('room-bed-type/{roombedtype?}', RoomBedTypeEditScreen::class)->name('platform.room-bed-type.edit')
+    ->middleware('access:platform.systems.management');
 Route::screen('room-bed-types', RoomBedTypeListScreen::class)->name('platform.room-bed-type.list');
 
 // RoomStatuses
-Route::screen('room-status/{roomstatus?}', RoomStatusEditScreen::class)->name('platform.room-status.edit');
+Route::screen('room-status/{roomstatus?}', RoomStatusEditScreen::class)->name('platform.room-status.edit')
+    ->middleware('access:platform.systems.management');
 Route::screen('room-statuses', RoomStatusListScreen::class)->name('platform.room-status.list');
 
 // RoomTypes
-Route::screen('room-type/{roomtype?}', RoomTypeEditScreen::class)->name('platform.room-type.edit');
+Route::screen('room-type/{roomtype?}', RoomTypeEditScreen::class)->name('platform.room-type.edit')
+    ->middleware('access:platform.systems.management');
 Route::screen('room-types', RoomTypeListScreen::class)->name('platform.room-type.list');
 

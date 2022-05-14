@@ -31,11 +31,6 @@ class UserListScreen extends Screen
     public $description = 'Zarejestrowani użytkownicy systemu rezerwacji.';
 
     /**
-     * @var string
-     */
-    public $permission = 'platform.systems.users';
-
-    /**
      * Query data.
      *
      * @return array

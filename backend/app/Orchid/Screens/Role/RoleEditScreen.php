@@ -34,11 +34,6 @@ class RoleEditScreen extends Screen
     public $description = 'Zarządzanie prawami dostępu do systemu zarządzania rezerwacjami.';
 
     /**
-     * @var string
-     */
-    public $permission = 'platform.systems.roles';
-
-    /**
      * @var bool
      */
     private $exist = false;

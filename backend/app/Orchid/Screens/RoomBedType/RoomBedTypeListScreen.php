@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\RoomBedType;
 
 use App\Models\RoomBedType;
 use App\Orchid\Layouts\RoomBedTypeListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
@@ -42,11 +43,12 @@ class RoomBedTypeListScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [
-            Link::make('Dodaj nową rezerwację')
+        if (Auth::user()->hasAccess('platform.systems.management')) return [
+            Link::make('Dodaj nowy typ łóżka')
                 ->icon('plus')
                 ->route('platform.room-bed-type.edit')
         ];
+        else return [];
     }
 
     /**

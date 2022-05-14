@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\RoomType;
 
 use App\Models\RoomType;
 use App\Orchid\Layouts\RoomTypeListLayout;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
@@ -42,11 +43,12 @@ class RoomTypeListScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [
+        if (Auth::user()->hasAccess('platform.systems.management')) return [
             Link::make('Dodaj nowy typ')
                 ->icon('plus')
                 ->route('platform.room-type.edit')
         ];
+        else return [];
     }
 
     /**

@@ -37,11 +37,6 @@ class UserEditScreen extends Screen
     public $description = 'Edytowanie danych użytkownika takich jak nazwa czy adres e-mail';
 
     /**
-     * @var string
-     */
-    public $permission = 'platform.systems.users';
-
-    /**
      * @var User
      */
     private $user;

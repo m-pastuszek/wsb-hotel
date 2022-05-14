@@ -31,15 +31,18 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Pokoje')
                 ->icon('module')
                 ->route('platform.room.list')
-                ->title('Ogólne'),
+                ->title('Ogólne')
+                ->permission('platform.systems.reception'),
 
             Menu::make('Rezerwacje')
                 ->icon('directions')
-                ->route('platform.booking.list'),
+                ->route('platform.booking.list')
+                ->permission('platform.systems.reception'),
 
             Menu::make('Klienci')
                 ->icon('people')
-                ->route('platform.customer.list'),
+                ->route('platform.customer.list')
+                ->permission('platform.systems.reception'),
             /**
              * Menu dropdown
              */
@@ -54,33 +57,32 @@ class PlatformProvider extends OrchidServiceProvider
                 ->title('Zarządzanie danymi')
                 ->icon('modules')
                 ->route('platform.room-type.list')
-                ->permission('platform.systems.admin'),
+                ->permission('platform.systems.reception'),
 
             Menu::make('Statusy pokoi')
                 ->icon('start')
                 ->route('platform.room-status.list')
-                ->permission('platform.systems.admin'),
+                ->permission('platform.systems.reception'),
 
             Menu::make('Udogodnienia')
                 ->icon('equalizer')
                 ->route('platform.amenity.list')
-                ->permission('platform.systems.admin'),
+                ->permission('platform.systems.reception'),
 
             Menu::make('Typy łóżek')
                 ->icon('fa.bed')
                 ->route('platform.room-bed-type.list')
-                ->permission('platform.systems.admin'),
+                ->permission('platform.systems.reception'),
 
             Menu::make('Statusy rezerwacji')
                 ->icon('number-list')
                 ->route('platform.booking-status.list')
-                ->permission('platform.systems.admin'),
+                ->permission('platform.systems.reception'),
 
             Menu::make('Wyżywienie')
                 ->icon('cup')
                 ->route('platform.meal.list')
-                ->permission('platform.systems.admin'),
-
+                ->permission('platform.systems.reception'),
 
             /* Menu::make('Changelog')
                  ->icon('shuffle')
@@ -93,13 +95,13 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make(__('Użytkownicy'))
                 ->icon('user')
                 ->route('platform.systems.users')
-                ->permission('platform.systems.users')
+                ->permission('platform.systems.security')
                 ->title(__('Bezpieczeństwo')),
 
             Menu::make(__('Role'))
                 ->icon('lock')
                 ->route('platform.systems.roles')
-                ->permission('platform.systems.roles'),
+                ->permission('platform.systems.security'),
         ];
     }
 
@@ -122,9 +124,9 @@ class PlatformProvider extends OrchidServiceProvider
     {
         return [
             ItemPermission::group(__('System'))
-                ->addPermission('platform.systems.roles', __('Roles'))
-                ->addPermission('platform.systems.users', __('Users'))
-                ->addPermission('platform.systems.admin', __('Admin')),
+                ->addPermission('platform.systems.security', __('Security'))
+                ->addPermission('platform.systems.management', __('Management'))
+                ->addPermission('platform.systems.reception', __('Reception')),
         ];
     }
 }

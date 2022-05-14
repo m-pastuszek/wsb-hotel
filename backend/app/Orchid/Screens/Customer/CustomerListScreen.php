@@ -4,13 +4,13 @@ namespace App\Orchid\Screens\Customer;
 
 use App\Orchid\Layouts\CustomerListLayout;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Actions\Link;
 
 class CustomerListScreen extends Screen
 {
 
-    // TODO: Uzupełnić - P
     /**
      * Display header name.
      *
@@ -44,11 +44,12 @@ class CustomerListScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [
+        if (Auth::user()->hasAccess('platform.systems.management')) return [
             Link::make('Dodaj nowego klienta')
                 ->icon('plus')
                 ->route('platform.customer.edit')
         ];
+        else return [];
     }
 
     /**
