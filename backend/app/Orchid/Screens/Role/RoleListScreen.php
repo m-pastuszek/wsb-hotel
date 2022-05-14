@@ -25,7 +25,7 @@ class RoleListScreen extends Screen
      *
      * @var string
      */
-    public $description = 'Zarządzanie prawami dostępu do systemu zarządzania rezerwacjami.';
+    public $description = 'Zarządzanie prawami dostępu do systemu zarządzania rezerwacjami';
 
     /**
      * Query data.
@@ -47,7 +47,7 @@ class RoleListScreen extends Screen
     public function commandBar(): array
     {
         return [
-            Link::make(__('Add'))
+            Link::make(__('Dodaj rolę'))
                 ->icon('plus')
                 ->href(route('platform.systems.roles.create')),
         ];

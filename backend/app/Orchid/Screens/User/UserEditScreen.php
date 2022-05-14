@@ -53,7 +53,7 @@ class UserEditScreen extends Screen
         $this->user = $user;
 
         if (! $user->exists) {
-            $this->name = 'Create User';
+            $this->name = 'Dodaj użytkownika';
         }
 
         $user->load(['roles']);
@@ -99,7 +99,7 @@ class UserEditScreen extends Screen
 
             Layout::block(UserEditLayout::class)
                 ->title(__('Informacje o profilu użytkownika'))
-                ->description(__('Aktualizacja informacji o profilu użytkownika i adresu e-mail'))
+                ->description(__('Aktualizacja informacji o profilu użytkownika i adresie e-mail'))
                 ->commands(
                     Button::make(__('Zapisz'))
                         ->type(Color::DEFAULT())
@@ -183,7 +183,7 @@ class UserEditScreen extends Screen
 
         $user->replaceRoles($request->input('user.roles'));
 
-        Toast::info(__('User was saved.'));
+        Toast::info(__('Użytkownik został zapisany'));
 
         return redirect()->route('platform.systems.users');
     }
@@ -199,7 +199,7 @@ class UserEditScreen extends Screen
     {
         $user->delete();
 
-        Toast::info(__('User was removed'));
+        Toast::info(__('Użytkownik został usunięty'));
 
         return redirect()->route('platform.systems.users');
     }
@@ -213,7 +213,7 @@ class UserEditScreen extends Screen
     {
         UserSwitch::loginAs($user);
 
-        Toast::info(__('You are now impersonating this user'));
+        Toast::info(__('Aktualnie podszywasz się pod danego użytkownika'));
 
         return redirect()->route(config('platform.index'));
     }
