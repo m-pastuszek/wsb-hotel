@@ -7,6 +7,7 @@ use App\Http\Resources\BookingResource;
 use App\Http\Resources\RoomResource;
 use App\Models\Amenity;
 use App\Models\Booking;
+use App\Models\Customer;
 use App\Models\Room;
 use App\Models\RoomBedType;
 use App\Models\RoomType;
@@ -143,5 +144,88 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             return response()->json(null, 400);
         }
+    }
+
+    /**
+     * Sprawdzenie, czy wybrany pokój spełnia zaznaczone przez użytkownika pola.
+     * @param Request $request
+     * @return JsonResponse|void
+     */
+    public function checkAvailability(Request $request) {
+        if ($request->has(['room_id', 'start_date', 'end_date', 'number_of_people'])) {
+            $room = Room::find($request->room_id);
+
+            // Sprawdzenie czy pokój jest zajęty w wybranym terminie lub jego status jest nieoperacyjny.
+            // Jeśli tak, zwraca 406 Not Acceptable z wiadomością.
+            // Jeśli nie, przechodzi dalej.
+            if ($room->isBooked($request->start_date, $request->end_date) or !$room->isOperatable())
+                return response()->json('Pokój jest zajęty w wybranym terminie.', 406);
+
+            // Sprawdzenie, czy nie wpisano za dużo osób.
+            if ($request->number_of_people > $room->roomType->max_occupancy)
+                return response()->json('Wybrano za dużą ilość osób.', 406);
+
+            else
+                return response()->json('Dane poprawne, przejdź do kroku 1.');
+        }
+        else
+            return response()->json('Invalid parameters.', 400);
+    }
+
+    /**
+     * Utworzenie nowej rezerwacji
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function create(Request $request) {
+        if ($request->has([
+            'room_id', 'start_date', 'end_date', 'number_of_people', 'catering', 'amount',
+            'client_firstname', 'client_lastname', 'client_email', 'client_phone', 'client_country'])) {
+
+            $room = Room::findOrFail($request->room_id);
+
+            // na tym etapie nie sprawdzamy poprawności danych, bo dzieje się to w metodzie check, czyli w kroku pierwszym.
+            // przypisanie stringowi jego id posiłku (meal_id)
+            switch ($request->catering) {
+                case "breakfast":
+                    $meal_id = 1;
+                    break;
+                case "dinner":
+                    $meal_id = 2;
+                    break;
+                case "breakfast_dinner":
+                    $meal_id = 3;
+                    break;
+                case "all_inclusive":
+                    $meal_id = 4;
+                    break;
+            }
+
+            $customer = Customer::create([
+                'first_name' => $request->client_firstname,
+                'last_name' => $request->client_lastname,
+                'phone' => $request->client_phone,
+                'email' => $request->client_email,
+                'country' => $request->client_country
+            ]);
+
+            $customer->save();
+
+            $booking = Booking::create([
+                'room_id' => $room->id,
+                'time_from' => $request->start_date,
+                'time_to'  => $request->end_date,
+                'number_of_people' => $request->number_of_people,
+                'additional_information' => $request->additional_information,
+                'amount' => $request->amount,
+                'customer_id' => $customer->id,
+                'booking_status_id' => 1,
+                'meal_id' => $meal_id,
+            ]);
+
+            $booking->save();
+        }
+        else
+            return response()->json('Invalid parameters.', 400);
     }
 }

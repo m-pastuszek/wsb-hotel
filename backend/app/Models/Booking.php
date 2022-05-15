@@ -22,7 +22,14 @@ class Booking extends Model
         'time_from',
         'time_to',
         'amount',
-        'additional_information'
+        'number_of_people',
+        'additional_information',
+        'check_in',
+        'check_out',
+        'customer_id',
+        'room_id',
+        'booking_status_id',
+        'meal_id',
     ];
 
     /**

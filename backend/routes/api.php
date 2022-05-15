@@ -41,6 +41,8 @@ Route::group(['prefix' => '/amenities'], function() {
 Route::group(['prefix' => '/bookings'], function() {
     Route::get('/', [BookingController::class, 'index']);
     Route::get('available-rooms', [BookingController::class, 'availableRooms']);
+    Route::post('check', [BookingController::class, 'checkAvailability']);
+    Route::post('create', [BookingController::class, 'create']);
     Route::get('/{id}', [BookingController::class, 'show']);
 });
 

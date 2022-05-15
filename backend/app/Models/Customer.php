@@ -22,7 +22,8 @@ class Customer extends Model
         'last_name',
         'address',
         'phone',
-        'email'
+        'email',
+        'country'
     ];
 
     /**
