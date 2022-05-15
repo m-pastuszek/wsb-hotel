@@ -6,13 +6,13 @@
                     <div class="search__date">
                         <span>Termin</span>
                         <div class="search__date-inputs">
-                            <input v-model="startDate" min="2022-05-14" type="date" name="booking-start">
+                            <input v-model="startDate" :min="todayDate" type="date" name="booking-start">
                             <input v-model="endDate" :min="startDate" type="date" name="booking-start">
                         </div>
                     </div>
                     <div class="search__occupancy">
                         <span>Ilość osób</span>
-                        <select name="occupancy" id="occupancy">
+                        <select v-model="occupancy" name="occupancy" id="occupancy">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -79,8 +79,7 @@
                     <div class="search__price-col">
                         <span class="search__price">{{ room.price_per_night }} zł/noc</span>
                         <span class="search__price-comment">Za osobę</span>
-                        <RouterLink class="search__booking" to="/rezerwacja">Dokonaj rezerwacji</RouterLink>
-                        <RouterLink class="search__show-more" :to="`/room/${room.id}`">Zobacz więcej</RouterLink>
+                        <RouterLink class="search__booking" :to="`/room/${room.id}`">Dokonaj rezerwacji</RouterLink>
                     </div>
                 </div>
             </div>
@@ -102,6 +101,7 @@
                 seaView: false,
                 startDate: null,
                 endDate: null,
+                todayDate: '',
                 filters: [
                     { sea_view: false },
                     { terrace: false },
@@ -116,6 +116,20 @@
             }
         },
         methods: {
+            addToLocalStorage: function () {
+                window.localStorage.setItem('start_date', this.startDate);
+                window.localStorage.setItem('end_date', this.endDate);
+                window.localStorage.setItem('occupancy', this.occupancy);
+            },
+            getTodayDate: function () {
+                let today = new Date();
+                let dd = String(today.getDate() + 1).padStart(2, '0');
+                let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                let yyyy = today.getFullYear();
+
+                today = yyyy + '-' + mm + '-' + dd;
+                this.todayDate = today;
+            },
             filterResults: function () {
                 this.filters[6].start_date = this.startDate;
                 this.filters[7].end_date = this.endDate;
@@ -141,6 +155,7 @@
                         this.searchStatus = false;
                     }
                 })
+                this.addToLocalStorage();
             }
         },
         computed: {
@@ -165,6 +180,7 @@
                     this.rooms = response.data;
                     document.querySelector('.lds-hourglass').style.display = 'none';
                 })
+            this.getTodayDate();
         }
     }
 </script>

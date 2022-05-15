@@ -50,7 +50,6 @@
                         <label for="message">
                             <p>Twoja wiadomość:</p>
                             <textarea v-model="message" placeholder="Wpisz swoją wiadomość..." name="" id="" cols="30" rows="10"></textarea>
-                            <!-- <input name="message" type="text" placeholder="Wpisz swoją wiadomość..."> -->
                         </label>
                         <label class="contact-form__checkbox-label" for="rodo">
                             <input v-model="rodo" name="rodo" type="checkbox">
