@@ -224,6 +224,8 @@ class BookingController extends Controller
             ]);
 
             $booking->save();
+
+            return response()->json('Dane dodane pomyślnie.');
         }
         else
             return response()->json('Invalid parameters.', 400);
