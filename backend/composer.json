@@ -8,11 +8,13 @@
         "php": "^7.3|^8.0",
         "doctrine/dbal": "^3.2",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.4",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "orchid/platform": "^10.25"
+        "orchid/platform": "^10.25",
+        "pay-now/paynow-php-sdk": "^2.2",
+        "symfony/http-client": "^5.4"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
