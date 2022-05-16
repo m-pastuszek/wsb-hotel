@@ -74,6 +74,7 @@ class="header"
 
 
 </header>
+<div class="booking-form__background"></div>
 
 <RouterView />
 </template>
@@ -128,7 +129,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 99;
+    z-index: 48;
     width: 100%;
     transition: .3s ease;
     background-color: transparent;

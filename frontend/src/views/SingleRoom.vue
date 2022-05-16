@@ -1,7 +1,9 @@
+
+
 <template>
     <div class="single-room">
         <HeroSmall :title="roomTitle" :assetsImage="true" :image="heroImage"/>
-        <Slider :slides="slides" :assetsImage="true" isSingle="true"/>
+        <Slider :slides="slides" :assetsImage="true" :isSingle="true"/>
         <div class="container">
             <div class="single-room__wrapper" v-if="rooms">
                 <div v-for="(room, index) in rooms" :key="index" class="single-room__room">
@@ -26,7 +28,7 @@
                                     <img v-if="feature.name == 'Klimatyzacja'" src="@/assets/images/klimatyzacja.svg" alt="">
                                     <img v-if="feature.name == 'Taras'" src="@/assets/images/balkon.svg" alt="">
                                     <img v-if="feature.name == 'Balkon'" src="@/assets/images/balkon.svg" alt="">
-                                    <img v-if="feature.name == 'Przystosowanie dla niepełnosprawnych'" src="@/assets/images/room-service.svg" alt="">
+                                    <img v-if="feature.name == 'Przystosowany dla niepełnosprawnych'" src="@/assets/images/inwalida.svg" alt="">
                                     <img v-if="feature.name == 'Widok na morze'" src="@/assets/images/sea-view.svg" alt="">
                                     <img v-if="feature.name == 'Wi-Fi'" src="@/assets/images/wifi.svg" alt="">
                                     <span>{{ feature.name }}</span>
@@ -45,45 +47,46 @@
                         <div class="single-room__occupancy">
                             <span>Ilość osób</span>
                             <select v-model="occupancy" name="occupancy" id="occupancy">
-                                <option value="1">1</option>
+                                <option selected="selected" value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                                 <option value="6">6</option>
                             </select>
+                            {{occupancy}}
                         </div>
                         <div class="single-room__catering">
                             <h3>Wyżywienie</h3>
                             <div class="single-room__filter-features">
                                 <div for="all-inclusive">
-                                    <input checked="true" v-model="cateringInput" value="allInclusive" name="catering-name" type="radio" @click="calcPrice">
-                                    <label>All inclusive {{this.allInclusivePrice}} - {{allInclusive}}</label>
+                                    <input checked="true" v-model="cateringInput" value="allInclusive" name="catering-name" type="radio">
+                                    <label>All inclusive</label>
                                 </div>
                                 <div for="breakfast-dinner">
-                                    <input v-model="cateringInput" value="breakfastDinner" name="catering-name" type="radio" @click="calcPrice">
-                                    <label>Śniadanie + Obiad {{this.breakfastDinnerPrice}}</label>
+                                    <input v-model="cateringInput" value="breakfastDinner" name="catering-name" type="radio">
+                                    <label>Śniadanie + Obiad</label>
                                 </div>
                                 <div for="dinner">
-                                    <input v-model="cateringInput" name="catering-name" value="dinner" type="radio" @click="calcPrice">
-                                    <label>Obiad {{this.dinnerPrice}}</label>
+                                    <input v-model="cateringInput" name="catering-name" value="dinner" type="radio">
+                                    <label>Obiad</label>
                                 </div>
                                 <div for="breakfast">
-                                    <input v-model="cateringInput" name="catering-name" value="breakfast" type="radio" @click="calcPrice">
-                                    <label>Śniadanie {{this.breakfastPrice}}</label>
+                                    <input v-model="cateringInput" name="catering-name" value="breakfast" type="radio">
+                                    <label>Śniadanie</label>
                                 </div>
                             </div>
                         </div>
                         <div class="single-room__price-box">
-                            <button v-if="this.price == 0" class="single-room__submit" @click="calcPrice">
+                            <button v-if="price == 0" class="single-room__submit" @click="calcPrice">
                                 Pokaż cenę
                             </button>
-                            <button v-if="this.price" class="single-room__submit-clicked" @click="calcPrice">
+                            <button v-if="price" class="single-room__submit-clicked" @click="calcPrice">
                                 Aktualizuj cenę
                             </button>
-                            <span v-if="this.price" class="single-room__price">{{this.price}} zł</span>
-                            <span v-if="this.price" class="single-room__suffix">Łącznie</span>
-                            <button v-if="this.price" class="single-room__submit" @click="calcPrice">
+                            <span v-if="price" class="single-room__price">{{price}} zł</span>
+                            <span v-if="price" class="single-room__suffix">Łącznie</span>
+                            <button v-if="price" class="single-room__submit" @click="submitFirstStep">
                                 Dokonaj rezerwacji
                             </button>
                         </div>
@@ -91,6 +94,15 @@
                 </div>
             </div>
         </div>
+        <BookingForm
+            :image="heroImage"
+            :roomTitle="roomTitle"
+            :startDate="startDate"
+            :endDate="endDate"
+            :occupancy="occupancy"
+            :catering="cateringInput"
+            :price="price"
+        />
         <ContactForm/>
     </div>
 </template>
@@ -98,12 +110,11 @@
 <script setup>
     import ContactForm from '@/components/ContactForm.vue';
     import HeroSmall from '@/components/HeroSmall.vue';
-    import Slider from '@/components/Slider.vue';
+    import BookingForm from '@/components/BookingForm.vue';
 
 </script>
 <script>
     import axios from 'axios';
-import { computed } from '@vue/runtime-core';
 
 
     export default {
@@ -121,6 +132,7 @@ import { computed } from '@vue/runtime-core';
                 pricePerNight: 0,
                 occupancy: null,
                 todayDate: '',
+                diffDays: null,
 
                 //v-model
                 allInclusive: null,
@@ -137,16 +149,33 @@ import { computed } from '@vue/runtime-core';
             }
         },
         methods: {
+            submitFirstStep: function () {
+                this.calcPrice();
+                const background = document.querySelector('.booking-form__background');
+                const form = document.querySelector('.booking-form');
+                background.style.display = "block";
+                form.style.display = "block";
+            },
+            
             setLocalStorage: function () {
                 this.startDate = window.localStorage.getItem('start_date');
                 this.endDate = window.localStorage.getItem('end_date');
-                this.occupancy = window.localStorage.getItem('occupancy');
+                if (window.localStorage.getItem('occupancy') == 'undefined') {
+                    this.occupancy = window.localStorage.getItem('occupancy');
+                    
+                }
             },
+            
             addToLocalStorage: function () {
-                window.localStorage.setItem('start_date', this.startDate);
-                window.localStorage.setItem('end_date', this.endDate);
-                window.localStorage.setItem('occupancy', this.occupancy);
-                window.localStorage.setItem('catering', this.cateringInput);
+                if (this.startDate) {
+                    window.localStorage.setItem('start_date', this.startDate);
+                }
+                if (this.endDate) {
+                    window.localStorage.setItem('end_date', this.endDate);
+                }
+                if (this.occupancy) {
+                    window.localStorage.setItem('occupancy', this.occupancy);
+                }
             },
             getTodayDate: function () {
                 let today = new Date();
@@ -160,24 +189,36 @@ import { computed } from '@vue/runtime-core';
             calcPrice: function () {
                 this.addToLocalStorage();
                 if (this.cateringInput == 'allInclusive') {
-                    this.price = (this.pricePerNight + this.allInclusivePrice) * this.occupancy;
+                    console.log(this.price);
+                    console.log(this.pricePerNight);
+                    console.log(this.allInclusivePrice);
+                    console.log(this.occupancy);
+                    console.log(this.calcDate);
+                    this.price = ((this.pricePerNight + this.allInclusivePrice) * this.occupancy) * this.calcDate;
                 } else if (this.cateringInput == 'breakfastDinner') {
-                    this.price = (this.pricePerNight + this.breakfastDinnerPrice) * this.occupancy;
+                    this.price = ((this.pricePerNight + this.breakfastDinnerPrice) * this.occupancy) * this.calcDate;
                 } else if (this.cateringInput == 'dinner') {
-                    this.price = (this.pricePerNight + this.dinnerPrice) * this.occupancy;
+                    this.price = ((this.pricePerNight + this.dinnerPrice) * this.occupancy) * this.calcDate;
                 } else if (this.cateringInput == 'breakfast') {
-                    this.price = (this.pricePerNight + this.breakfastPrice) * this.occupancy;
+                    this.price = ((this.pricePerNight + this.breakfastPrice) * this.occupancy) * this.calcDate;
                 } else {
                     this.price = 0;
                 }
-                
+
             },
         },
         computed: {
-
+            calcDate() {
+                const startDate = new Date(this.startDate);
+                const endDate = new Date(this.endDate);
+                const diffTime = Math.abs(endDate - startDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return this.diffDays = diffDays;
+            },
         },
+
         mounted() {
-            this.setLocalStorage();
+            // this.setLocalStorage();
              axios.get('https://hotel.mpastuszek.pl/api/rooms/'+this.$route.params.id)
                 .then(response => {
                     this.rooms = response.data;
@@ -185,9 +226,8 @@ import { computed } from '@vue/runtime-core';
                     this.heroImage = this.rooms.data.photos.hero;
                     this.slides = this.rooms.data.photos.gallery;
                     this.pricePerNight = this.rooms.data.price_per_night;
-                    this.calcPrice();
-
                 })
+                
             
             axios.get('https://hotel.mpastuszek.pl/api/meals')
                 .then(response => {
@@ -200,6 +240,10 @@ import { computed } from '@vue/runtime-core';
                     this.dinnerPrice = this.catering.data[1].cost;
                     this.breakfastPrice = this.catering.data[0].cost;
                     this.calcPrice();
+
+                })
+                .catch((error)=>{
+                    console.log(error);
                 })
             this.getTodayDate();
         },
@@ -288,6 +332,7 @@ import { computed } from '@vue/runtime-core';
                 flex-direction: column;
                 align-items: center;
                 margin-right: 33px;
+                flex: 1;
                 img {
                     width: 32px;
                     height: 32px;
@@ -298,6 +343,7 @@ import { computed } from '@vue/runtime-core';
                     font-size: 1.4rem;
                     line-height: 1.7rem;
                     color: $black;
+                    text-align: center;
                 }
             }
         }

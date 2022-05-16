@@ -13,7 +13,7 @@
                     <div class="search__occupancy">
                         <span>Ilość osób</span>
                         <select v-model="occupancy" name="occupancy" id="occupancy">
-                            <option value="1">1</option>
+                            <option selected="selected" value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
@@ -102,6 +102,13 @@
                 startDate: null,
                 endDate: null,
                 todayDate: '',
+
+                occupancy: 0,
+                terrace: false,
+                balcony: false,
+                air_conditioning: false,
+                adapted_for_disabled: false,
+
                 filters: [
                     { sea_view: false },
                     { terrace: false },
@@ -117,9 +124,15 @@
         },
         methods: {
             addToLocalStorage: function () {
-                window.localStorage.setItem('start_date', this.startDate);
-                window.localStorage.setItem('end_date', this.endDate);
-                window.localStorage.setItem('occupancy', this.occupancy);
+                if (this.startDate) {
+                    window.localStorage.setItem('start_date', this.startDate);
+                }
+                if (this.endDate) {
+                    window.localStorage.setItem('end_date', this.endDate);
+                }
+                if (this.occupancy) {
+                    window.localStorage.setItem('occupancy', this.occupancy);
+                }
             },
             getTodayDate: function () {
                 let today = new Date();
