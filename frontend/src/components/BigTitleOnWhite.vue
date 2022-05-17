@@ -145,9 +145,6 @@
                 left: 40%;
             }
         }
-        &.floating-main {
-            
-        }
     }
     &__button {
         @include gold-button;

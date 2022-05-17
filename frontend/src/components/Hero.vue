@@ -48,7 +48,6 @@
                         </svg>
                     </div>
                 </RouterLink>
-
             </div>
         </div>
     </section>
@@ -58,6 +57,7 @@
 <script>
 
 </script>
+
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 @import "@/assets/scss/breakpoints.scss";

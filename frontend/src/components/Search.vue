@@ -59,8 +59,7 @@
             <div class="search__wrapper" v-if="rooms">
                 <div v-for="(room, index) in rooms.data" :key="index" class="search__room">
                     <figure class="search__room-figure">
-                        <!-- <img :src="'bed.png' + room.thumbNail" alt=""> -->
-                        <img src="@/assets/images/bed.png">
+                        <img :src="room.photos.hero">
                     </figure>
                     <div class="search__room-content">
                         <h3 class="search__room-title">
@@ -192,6 +191,9 @@
                 .then(response => {
                     this.rooms = response.data;
                     document.querySelector('.lds-hourglass').style.display = 'none';
+                })
+                .catch(response => {
+                    console.log(response);
                 })
             this.getTodayDate();
         }

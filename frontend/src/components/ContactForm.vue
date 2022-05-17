@@ -112,7 +112,7 @@
                     .then((response) => {
                         this.status = this.successMessage;
                     })
-                    .catch(() => {
+                    .catch((response) => {
                         this.status = this.errorMessage;
                     });
             },

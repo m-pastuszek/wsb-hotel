@@ -25,15 +25,15 @@
                         <div class="slider__slide-box">
                             <figure class="slider__picture">
                                 <img v-if="this.assetsImage == false" :src="getImageUrl(slide.imageUrl)" :alt="slide.alt">
-                                <img v-if="this.assetsImage" :src="slide.url" :alt="slide.alt">
+                                <img v-if="this.assetsImage" :src="slide.gallery[0].url" :alt="slide.alt">
                             </figure>
-                            <h3 class="slider__slide-title">
+                            <h3 v-if="!isSingle" class="slider__slide-title">
                                 {{ slide.title }}
                             </h3>
-                            <p class="slider__slide-text">
+                            <p v-if="!isSingle" class="slider__slide-text">
                                 {{ slide.text }}
                             </p>
-                            <RouterLink class="slider__slide-button" to="/">
+                            <RouterLink v-if="!isSingle" class="slider__slide-button" to="/">
                                 Dokonaj rezerwacji
                             </RouterLink>
                         </div>
