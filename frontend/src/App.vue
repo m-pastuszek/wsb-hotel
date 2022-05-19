@@ -42,24 +42,24 @@ class="header"
             <nav class="header__menu">
                 <ul>
                     <li class="header__menu-element">
-                        <RouterLink to="/">
+                        <a href="/#hotel">
                             Hotel
-                        </RouterLink>
+                        </a>
                     </li>
                     <li class="header__menu-element">
-                        <RouterLink to="/">
+                        <a href="/#spa">
                             SPA
-                        </RouterLink>
+                        </a>
                     </li>
                     <li class="header__menu-element">
-                        <RouterLink to="/">
+                        <a href="/#restaurant">
                             Restauracja
-                        </RouterLink>
+                        </a>
                     </li>
                     <li class="header__menu-element">
-                        <RouterLink to="/">
+                        <a href="/#contact">
                             Kontakt
-                        </RouterLink>
+                        </a>
                     </li>
                     <li class="header__menu-element ">
                         <RouterLink to="/rezerwacja">

@@ -23,7 +23,7 @@ const router = createRouter({
     {
       path: '/rezerwacja',
       name: 'rezerwacja',
-      component: () => import('../views/Booking.vue')
+      component: () => import('../views/Booking.vue'),
     },
     {
       path: '/room/:id',
@@ -31,9 +31,18 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/SingleRoom.vue')
-    }
-  ]
+      component: () => import('../views/SingleRoom.vue'),
+    },
+    {
+      path: '/thank-you',
+      name: 'thank-you',
+      component: () => import('../views/ThankYou.vue'),
+    },
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    return { top: 0 }
+  },
 })
 
 export default router

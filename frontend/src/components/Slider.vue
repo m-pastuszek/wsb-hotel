@@ -24,8 +24,8 @@
                     <swiper-slide v-for=" (slide, index) in slides " :key="index">
                         <div class="slider__slide-box">
                             <figure class="slider__picture">
-                                <img v-if="this.assetsImage == false" :src="getImageUrl(slide.imageUrl)" :alt="slide.alt">
-                                <img v-if="this.assetsImage" :src="slide.gallery[0].url" :alt="slide.alt">
+                                <img v-if="assetsImage == false" :src="getImageUrl(slide.imageUrl)" :alt="slide.alt">
+                                <img v-if="assetsImage" :src="slide.url" :alt="slide.alt">
                             </figure>
                             <h3 v-if="!isSingle" class="slider__slide-title">
                                 {{ slide.title }}
@@ -103,6 +103,8 @@
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+    position: relative;
+    z-index: 2;
     &--single {
         background-color: $white;
         .slider__title, .slider__slide-title, .slider__slide-text, .slider__slide-button {

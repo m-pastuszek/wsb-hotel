@@ -21,10 +21,10 @@
                         Liczba osób: {{ occupancy }}
                     </div>
                     <div class="booking-form__catering">
-                        <span v-if="catering == 'allInclusive'">All inclusive</span>
+                        <span v-if="catering == 'all_inclusive'">All inclusive</span>
                         <span v-if="catering == 'dinner'">Obiady</span>
                         <span v-if="catering == 'breakfast'">Śniadania</span>
-                        <span v-if="catering == 'breakfastDinner'">Śniadania + obiady</span>
+                        <span v-if="catering == 'breakfast_dinner'">Śniadania + obiady</span>
                     </div>
                     <div class="booking-form__price-box">
                         <span class="booking-form__prefix">Do zapłaty:</span><span class="booking-form__price">{{price}} zł</span>
@@ -111,11 +111,11 @@
                     <div class="booking-form__full-name">
                         <label for="name">
                             <p>Imię:</p>
-                            <input v-model="name" name="name" autocomplete="off" type="text" placeholder="Podaj swoje imię">
+                            <input v-model="firstName" name="name" autocomplete="off" type="text" placeholder="Podaj swoje imię">
                         </label>
                         <label for="name">
                             <p>Nazwisko:</p>
-                            <input v-model="surname" name="surname" type="text" placeholder="Podaj swoje nazwisko">
+                            <input v-model="lastName" name="surname" type="text" placeholder="Podaj swoje nazwisko">
                         </label>
                     </div>
                     <label for="name">
@@ -131,11 +131,11 @@
                         <p class="booking-form__message-info">
                             Realizacja życzeń specjalnych nie jest gwarantowana, ale obiekt postara się spełnić Twoją prośbę. Zawsze możesz dodać życzenie specjalne po sfinalizowaniu rezerwacji!
                         </p>
-                        <textarea v-model="message" placeholder="Wpisz swoją wiadomość..." name="" id="" cols="30" rows="3"></textarea>
+                        <textarea v-model="additionalInformation" placeholder="Wpisz swoją wiadomość..." name="" id="" cols="30" rows="3"></textarea>
                     </label>
                     
                     <div class="booking-form__send-button">
-                        <button>Następny krok: Przekierowanie do płatności</button>
+                        <button @click="nextStep">Następny krok: Przekierowanie do płatności</button>
                     </div>
                     <!-- <div class="booking-form__error-box">
                         <p v-if="errors.length">
@@ -148,6 +148,19 @@
                     <!-- <div v-if="status" class="booking-form__status-box">
                         <span>{{ status }}</span>
                     </div> -->
+                    <!-- <p>room id: {{ roomId }}</p>
+                    <p>start: {{ startDate }}</p>
+                    <p>end: {{ endDate }}</p>
+                    <p>occu: {{ occupancy }}</p>
+                    <p>catering: {{ catering }}</p>
+                    <p>price: {{ price }}</p>
+                    <p>name: {{ firstName }}</p>
+                    <p>last name: {{ lastName }}</p>
+                    <p>mail: {{ email }}</p>
+                    <p>phone: {{ phone }}</p>
+                    <p>country: {{ country }}</p>
+                    <p>additional: {{ additionalInformation }}</p> -->
+
                 </form>
             </div>
         </div>
@@ -156,13 +169,22 @@
 
 
 <script>
+    import axios from 'axios';
+
     export default {
         data() {
             return {
-                
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                country: 'PL',
+                additionalInformation: '',
+                error: 'null'
             }
         },
         props: {
+            roomId: Number,
             image: String,
             roomTitle: String,
             startDate: String,
@@ -172,6 +194,44 @@
             price: Number,
         },
         methods: {
+            nextStep: function() {
+                axios
+                    .post('https://hotel.mpastuszek.pl/api/bookings/create', {
+                        room_id: this.roomId,
+                        start_date: this.startDate,
+                        end_date: this.endDate,
+                        number_of_people: this.occupancy,
+                        catering: this.catering,
+                        amount: this.price,
+                        client_firstname: this.firstName,
+                        client_lastname: this.lastName,
+                        client_email: this.email,
+                        client_phone: this.phone,
+                        client_country: this.country,
+                        additional_information: this.additional_information,
+                    })
+                    .then((response) => {
+                        this.error = null;
+
+                        console.log(response);
+                        const background = document.querySelector(
+                            ".booking-form__background"
+                        );
+                        const form = document.querySelector(".booking-form");
+                        background.style.display = "none";
+                        form.style.display = "none";
+                        this.$router.push('/thank-you');
+                    })
+                    .catch((error) => {
+                        this.error = null;
+                        if (error.response) {
+                            this.error = error.response.data;
+                            console.log(error.response);
+                            // console.log(error.response.status);
+                            // console.log(error.response.headers);
+                        }
+                    });
+            },
             closeForm: function () {
                 const background = document.querySelector('.booking-form__background');
                 const form = document.querySelector('.booking-form');

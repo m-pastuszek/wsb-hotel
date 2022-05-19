@@ -1,6 +1,6 @@
 <template>
-    <section class="big-title-on-white" id="spa">
-        
+    <section class="big-title-on-white">
+        <div class="big-title-on-white__anchor-div" id="spa"></div>
         <div class="big-title-on-white__background-columns container">
             <div class="big-title-on-white__col-1"></div>
             <div class="big-title-on-white__col-2"></div>
@@ -82,9 +82,16 @@
     margin-top: 166px;
     margin-bottom: 182px;
     position: relative;
+    z-index: 1;
     @include breakpoint-max('mobile') {
         overflow: hidden;
         padding-bottom: 200px;
+    }
+    &__anchor-div {
+        position: absolute;
+        top: -250px;
+        left: 0;
+        height: 0;
     }
     &__background-columns {
         display: flex;
